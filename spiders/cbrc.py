@@ -13,6 +13,8 @@ class CbrcSpider():
         self.headers = {}
         self.mgr = MogoMgr()
         self.newslist = []
+        self.start_url = 'http://www.cbrc.gov.cn/chinese/zhengcefg.html'
+
 
     def get_news_header(self):
         '''
@@ -92,19 +94,15 @@ class CbrcSpider():
             content = '页面不存在'
         return content
 
-
-
-
     def run(self):
-        url = 'http://www.cbrc.gov.cn/chinese/zhengcefg.html'
-        urls = self.get_html(url)
+        urls = self.get_html(self.start_url)
         self.send_request(urls)
 
         for news in self.newslist:
             find_one = self.mgr.find_one('url', news.url)
             if find_one is not None:
                 log_line('该URL已经存在 无需写入')
-                log(url)
+                log(news.url)
                 continue
             self.mgr.insert(news)
 
