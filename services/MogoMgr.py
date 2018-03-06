@@ -45,6 +45,9 @@ class MogoMgr(object):
         # 获取需要发送的新闻
         pass
 
+    def is_inside(self, key, value):
+        pass
+
 
 
 if __name__ == '__main__':

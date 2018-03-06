@@ -41,16 +41,6 @@ class CbrcSpider():
 
             self.newslist.append(news)
 
-
-
-        # log(self.newslist[0].url, '模型數據')
-            #
-            # log(item.xpath('./@href'))
-            # log(item.xpath('./@title'))
-            # date = item.getparent().getnext().xpath('./text()')
-            # log( item.getparent().getnext().xpath('./text()')[0].strip())
-            # log(item['href'], item['title'])
-
         return self.parser_url(self.newslist)
 
     def parser_url(self, newslist):
@@ -111,6 +101,11 @@ class CbrcSpider():
         self.send_request(urls)
 
         for news in self.newslist:
+            find_one = self.mgr.find_one('url', news.url)
+            if find_one is not None:
+                log_line('该URL已经存在 无需写入')
+                log(url)
+                continue
             self.mgr.insert(news)
 
 if __name__ == '__main__':
