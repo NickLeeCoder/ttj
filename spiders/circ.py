@@ -8,20 +8,17 @@ from tools.tool import randomUserAgent
 from tools.log import log_line, log
 
 
-'''
-证监会行业信息 暂缓  PDF
-'''
 
-class CsrcSpider():
+class CircSpider():
 
     def __init__(self):
         self.headers = {}
         self.mgr = MogoMgr()
         self.newslist = []
         self.start_urls = [
-            'http://www.csrc.gov.cn/pub/zjhpublic/3300/3302/index_7401.htm',
-            'http://www.csrc.gov.cn/pub/zjhpublic/3300/3311/index_7401.htm',
-
+            'http://www.circ.gov.cn/web/site0/tab5176/',
+            'http://www.circ.gov.cn/web/site0/tab7924/',
+            'http://www.circ.gov.cn/web/site0/tab5207/',
         ]
 
     def get_news_header(self):
@@ -30,7 +27,7 @@ class CsrcSpider():
         :return:
         '''
         return {
-            'Host': 'www.csrc.gov.cn',
+            'Host': 'www.circ.gov.cn',
             'User-Agent': randomUserAgent(),
             'Pragma': 'no-cache',
 
@@ -45,28 +42,37 @@ class CsrcSpider():
 
         html = requests.get(url, headers=self.get_news_header())
         html.encoding = 'utf-8'
-        html = etree.HTML(html.text)
-        items = html.xpath('//div[@class="row"]')
 
-        log_line(len(items))
+        # log(html.text)
+
+        html = etree.HTML(html.text)
+        items = html.xpath('//td[@class="hui14"]')
+
+
+        log(len(items))
 
         for item in items:
             self.parser_item(item)
 
     def parser_item(self, item):
-        url = item.xpath('./li[@class="mc"]/div/a/@href')[0]
-        date = item.xpath('./li[@class="fbrq"]/text()')[0]
+        url = item.xpath('./a/@href')[0]
+        if 'search' in url:
+            return
+
+        date = item.getnext().xpath('./text()')[0][1:-1]
 
         news = News()
-        news.url = self.parser_url(url, 'http://www.csrc.gov.cn/pub/zjhpublic')
-        news.title = item.xpath('./li[@class="mc"]/div/a/text()')[0]
-        news.date = arrow.get(date).format('YYYY-MM-DD')
+        news.url = self.parser_url(url, 'http://www.circ.gov.cn')
+        news.title = item.xpath('./a/text()')[0]
+        news.date = date
+
 
         log(news.url, news.title, news.date)
+
         self.newslist.append(news)
 
     def parser_url(self, url, base_url):
-        return base_url + url.split('../..')[1]
+        return base_url + url
 
     def get_newsUrls(self):
         return [news.url for news in self.newslist]
@@ -95,7 +101,7 @@ class CsrcSpider():
         response = etree.HTML(html.text)
         log('当前访问的URL', url)
 
-        con_list = response.xpath('//div[@id="ContentRegion"]/descendant-or-self::*/text()')
+        con_list = response.xpath('//span[@id="zoom"]/descendant-or-self::*/text()')
         return ''.join(con_list).strip().replace('\r\n', '')
 
     def update_content(self, url, content):
@@ -104,14 +110,13 @@ class CsrcSpider():
                 news.content = content
 
     def run(self):
-
         for url in self.start_urls:
             self.get_html(url)
             self.send_request(self.get_newsUrls())
 
-            for news in self.newslist:
-                log(news.url, news.content)
-
+            # for news in self.newslist:
+            #     log(news.url, news.content)
+            #
             for news in self.newslist:
                 find_one = self.mgr.find_one('url', news.url)
                 if find_one is not None:
@@ -121,4 +126,4 @@ class CsrcSpider():
                 self.mgr.insert(news)
 
 if __name__ == '__main__':
-    CsrcSpider().run()
+    CircSpider().run()
