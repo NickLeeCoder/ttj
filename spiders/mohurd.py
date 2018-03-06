@@ -2,6 +2,7 @@
 import requests
 import json
 import arrow
+import re
 from lxml import etree
 from model.news import News
 from services.MogoMgr import MogoMgr
@@ -9,6 +10,11 @@ from tools.tool import randomUserAgent
 from bs4 import BeautifulSoup
 
 from tools.log import log_line, log
+
+'''
+暂缓  解析部分比较郁闷
+
+'''
 
 
 class MoHurdSpider():
@@ -42,13 +48,15 @@ class MoHurdSpider():
 
         bs = BeautifulSoup(html.text, 'html.parser')
 
-        urls = bs.find_all('a')
+        urls = bs.find_all(href=re.compile('^http://www.mohurd.gov.cn/[a-z]+/[0-9]+/t[0-9]+_[0-9]+.html$'))
 
-        new_urls = [url['href'] for url in urls if str(url['href']).startswith('http://www.mohurd.gov.cn/')]
+        log(len(urls))
+        for u in urls:
+            # log(u)
+            log(u['href'])
 
 
-        # '/html/body/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[1]'
-        return new_urls
+        # return urls
 
 
     def send_request(self, urls):
@@ -109,10 +117,15 @@ class MoHurdSpider():
 
 
     def run(self):
-        url = 'http://www.mohurd.gov.cn/zcjd/index.html'
-        urls = self.get_html(url)
+        url_1 = 'http://www.mohurd.gov.cn/zcjd/index.html'
+        url_2 = 'http://www.mohurd.gov.cn/fdcy/fdcyzcfb/index.html'
+        url_3 = 'http://www.mohurd.gov.cn/fdcy/fdcyzcfb/index.html'
+        url_4 = 'http://www.mohurd.gov.cn/fdcy/fdcyzcfb/index.html'
 
-        news_list = self.send_request(urls)
+
+        urls = self.get_html(url_2)
+
+        # news_list = self.send_request(urls)
         #
         # for news in news_list:
         #     self.mgr.insert(news)

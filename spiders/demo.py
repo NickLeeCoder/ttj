@@ -35,8 +35,8 @@ class MoHurdSpider():
         :param url:
         :return:
         '''
-        html = requests.get(url)
-        html.encoding = 'utf-8'
+        # html = requests.get(url)
+        # html.encoding = 'utf-8'
 
         # log(html.text)
 
@@ -48,10 +48,10 @@ class MoHurdSpider():
 
         html = requests.get(url)
         html.encoding = 'utf-8'
-        html = etree.HTML(html.text)
-        urls = html.xpath('//table[@style=" padding-bottom:5px; background:#FAFBFD; padding-left:25px; line-height:25px;"]/today/tr')
 
-        log(len(urls))
+        html = etree.HTML(html.text)
+        urls = html.xpath('/html/body/table/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody')
+        log('查找', urls, len(urls))
         # return new_urls
 
 
