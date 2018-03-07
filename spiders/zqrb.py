@@ -1,19 +1,27 @@
 
 import requests
 import re
+import arrow
 from lxml import etree
 from model.news import News
 from services.MogoMgr import MogoMgr
-from tools.tool import randomUserAgent
+from tools.tool import randomUserAgent, get_today
 
 from tools.log import log_line, log
 
 
-class HeXunSpider():
+class ZqrbSpider():
 
     def __init__(self):
         self.headers = {}
+        self.date = self.get_date()
         self.mgr = MogoMgr()
+
+
+    def get_date(self):
+        year, month, day = get_today()
+        date = str(year) + '-' + str(month) + '-' + str(day)
+        return date
 
     def get_host(self, url):
         host = url.split('/')[2]
@@ -25,10 +33,10 @@ class HeXunSpider():
         :return:
         '''
         return {
-            # 'Host': '',
+            'Host': 'epaper.zqrb.cn',
             'User-Agent': randomUserAgent(),
             'Pragma': 'no-cache',
-            'Referer': 'http://www.cs.com.cn/',
+            'Referer': 'http://epaper.zqrb.cn/',
         }
 
 
@@ -37,26 +45,23 @@ class HeXunSpider():
         :param url:
         :return:
         '''
-        html = requests.get(url)
-        html.encoding = 'gbk'
+        html = requests.get(url, headers=self.get_news_header())
+        html.encoding = 'utf-8'
 
-
-        # log(html.text)
-
-        pattern = r"\./*[a-z]*/*[a-z]*/[a-z]+/\d+/t\d+_\d+.html"
-
-        urls = re.findall(pattern, html.text)
+        html = etree.HTML(html.text)
+        urls = html.xpath('//a[@class="vote_content12px"]/@href')
 
         new_urls = []
-        for ur in  urls:
+        for ur in urls:
+            # log(self.parser_url(ur))
             new_urls.append(self.parser_url(ur))
 
-        log('数量', len(urls))
+        # log('数量', len(urls))
         return new_urls
 
 
     def parser_url(self, url):
-        return 'http://www.cs.com.cn' + url[1:]
+        return self.get_base_url() + url
 
     def send_request(self, urls):
         news_list = []
@@ -86,7 +91,7 @@ class HeXunSpider():
         '''
         header = self.get_news_header()
         html = requests.get(url, headers=header)
-        html.encoding = 'gbk'
+        html.encoding = 'utf-8'
 
         # log(html.text)
 
@@ -106,38 +111,48 @@ class HeXunSpider():
     def parse_item(self, response):
 
         try:
-            title = response.xpath('//div[@class="artical_t"]/h1/text()')[0].strip()
+            title = response.xpath('//td[@class="h1"]/text()')
+            title = ''.join(title).strip()
         except Exception as e:
             title = '未知'
-        try:
-            date = response.xpath('//span[@class="Ff"]/text()')[0].split()[0]
-        except Exception as e:
-            date = response.xpath('//span[@class="ctime01"]/text()')[0].split()[0]
 
+        date = self.date
 
         try:
-            con_list = response.xpath('//div[@class="artical_c"]/descendant-or-self::*/text()')
+            con_list = response.xpath('//div[@id="ozoom"]/descendant-or-self::*/text()')
         except Exception as e:
             con_list = '未知'
-
-        # contents = [re.sub(r'[a-z]+|\s+', '', cc) for cc in con_list]
-
         content = ''.join(con_list).strip()
         # log('content', content)
         return title, date, content
 
+
+    def get_base_url(self):
+        year, month, day = get_today()
+        year = str(year)
+        month = str(month) if month >= 10 else '0' + str(month)
+        day = str(day) if day >= 10 else '0' + str(day)
+
+        return 'http://epaper.zqrb.cn/html/{0}-{1}/{2}/'.format(year, month, day)
+
+
+    def get_start_url(self):
+        year, month, day = get_today()
+        year = str(year)
+        month = str(month) if month >= 10 else '0' + str(month)
+        day = str(day) if day >= 10 else '0' + str(day)
+
+        return 'http://epaper.zqrb.cn/html/{0}-{1}/{2}/node_2.htm'.format(year, month, day)
+
     def run(self):
+        url = self.get_start_url()
 
-        start_urls = [
-            'http://www.cs.com.cn/',
-        ]
-
-        for url in  start_urls:
-            urls = self.get_html(url)
-            news_list = self.send_request(urls)
-
-            for news in news_list:
-                self.mgr.insert(news)
+        # log(url)
+        urls = self.get_html(url)
+        news_list = self.send_request(urls)
+        #
+        for news in news_list:
+            self.mgr.insert(news)
 
 if __name__ == '__main__':
-    HeXunSpider().run()
+    ZqrbSpider().run()
