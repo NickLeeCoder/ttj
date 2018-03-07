@@ -1,7 +1,6 @@
 
 
 import pymongo
-import json
 from setting.setting import Setting
 from pymongo.errors import DuplicateKeyError
 from tools.singleton import singleton
@@ -30,7 +29,7 @@ class MogoMgr(object):
         try:
             self.sheet.insert(item)
         except DuplicateKeyError as e:
-            log_line('插入出错')
+            log_line('数据重复 无需插入')
 
     def update(self, item):
         self.sheet.update({'url':item['url']}, {'$set': item})

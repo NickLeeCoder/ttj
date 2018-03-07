@@ -12,6 +12,8 @@ from tools.log import log_line, log
 '''
 暂未完成  所有新闻详情为图片 后续完成
 
+可考虑修改为 仅适用标题进行 关键字 检索
+
 '''
 
 
