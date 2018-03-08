@@ -29,7 +29,7 @@ class MogoMgr(object):
         try:
             self.sheet.insert(item)
         except DuplicateKeyError as e:
-            log_line('数据重复 无需插入')
+            log('数据重复 无需插入', item['url'])
 
     def update(self, item):
         self.sheet.update({'url':item['url']}, {'$set': item})

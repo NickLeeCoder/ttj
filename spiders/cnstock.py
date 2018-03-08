@@ -5,26 +5,16 @@ import arrow
 from lxml import etree
 from model.news import News
 from services.MogoMgr import MogoMgr
-from tools.tool import randomUserAgent, get_today
+from tools.tool import randomUserAgent
 
 from tools.log import log_line, log
 
 
-class StcnSpider():
+class CnstockSpider():
 
     def __init__(self):
         self.headers = {}
         self.mgr = MogoMgr()
-
-
-    # def get_date(self):
-    #     year, month, day = get_today()
-    #     date = str(year) + '-' + str(month) + '-' + str(day)
-    #     return date
-
-    def get_host(self, url):
-        host = url.split('/')[2]
-        return host
 
     def get_news_header(self):
         '''
@@ -32,10 +22,10 @@ class StcnSpider():
         :return:
         '''
         return {
-            # 'Host': 'epaper.zqrb.cn',
+            # 'Host': '',
             'User-Agent': randomUserAgent(),
             'Pragma': 'no-cache',
-            'Referer': 'http://www.stcn.com/',
+            'Referer': 'http://www.cnstock.com/',
         }
 
 
@@ -45,25 +35,30 @@ class StcnSpider():
         :return:
         '''
         html = requests.get(url)
-        html.encoding = 'gbk'
+        html.encoding = 'utf-8'
 
         # log(html.text)
 
-        pattern = r"http://[a-z]+\.stcn.com/\d+/\d+/\d+.shtml"
+        pattern_1 = r"http://[a-z]+.cnstock.com/[a-z]+,[a-z]+-\d+-\d+.htm"
+        pattern_2 = r"http://[a-z]+.cnstock.com/[a-z]+/[a-z]+_[a-z]+/\d+/\d+.htm"
+        pattern_3 = r"http://[a-z]+.cnstock.com/[a-z]+/[a-z]+_[a-z]+/[a-z]+_[a-z]+/\d+/\d+.htm"
 
+        # pattern = r'http://[a-z]+.cnstock.com/.*?/\d+.htm'
+        # pattern = r'<a href=".*?\d+.htm"'
+
+        # pattern = r'"http://.*?/\d+.htm"'
+        # pattern = r'"http://(\.|[a-z]|/|,|-)+\d+.htm"'
+        # pattern = r'"http://(\.|[a-z]|/|,|-)*\d+.htm"'
+
+
+        pattern = '|'.join([pattern_1, pattern_2, pattern_3])
         urls = re.findall(pattern, html.text)
-
-        # new_urls = []
         # for ur in urls:
         #     log(ur)
-            # new_urls.append(self.parser_url(ur))
+
 
         log('数量', len(urls))
-        return urls
-
-
-    # def parser_url(self, url):
-    #     return self.get_base_url() + url
+        return set(urls)
 
     def send_request(self, urls):
         news_list = []
@@ -93,7 +88,7 @@ class StcnSpider():
         '''
         header = self.get_news_header()
         html = requests.get(url, headers=header)
-        html.encoding = 'utf-8'
+        html.encoding = 'gbk'
 
         # log(html.text)
 
@@ -113,17 +108,17 @@ class StcnSpider():
     def parse_item(self, response):
 
         try:
-            title = response.xpath('//div[@class="intal_tit"]/h2/text()')
+            title = response.xpath('//h1[@class="title"]/text()')
             title = ''.join(title).strip()
         except Exception as e:
             title = '未知'
 
         try:
-            date = response.xpath('//div[@class="info"]/text()')[0].split()[0]
+            date = response.xpath('//span[@class="timer"]/text()')[0].split()[0]
         except Exception as e:
             date = '未知'
         try:
-            con_list = response.xpath('//div[@id="ctrlfscont"]/descendant-or-self::*/text()')
+            con_list = response.xpath('//div[@id="qmt_content_div"]/descendant-or-self::*/text()')
         except Exception as e:
             con_list = ['未知']
         content = ''.join(con_list).strip()
@@ -131,23 +126,15 @@ class StcnSpider():
         return title, date, content
 
 
-    # def get_base_url(self):
-    #     year, month, day = get_today()
-    #     year = str(year)
-    #     month = str(month) if month >= 10 else '0' + str(month)
-    #     day = str(day) if day >= 10 else '0' + str(day)
-    #
-    #     return 'http://epaper.zqrb.cn/html/{0}-{1}/{2}/'.format(year, month, day)
-
-
     def run(self):
-        url = 'http://www.stcn.com/'
+        url = 'http://www.cnstock.com/'
 
         urls = self.get_html(url)
+
         news_list = self.send_request(urls)
 
         for news in news_list:
             self.mgr.insert(news)
 
 if __name__ == '__main__':
-    StcnSpider().run()
+    CnstockSpider().run()
