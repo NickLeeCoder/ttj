@@ -1,11 +1,9 @@
 
 import requests
-import re
-import arrow
 from lxml import etree
 from Model.news import News
 from Services.MogoMgr import MogoMgr
-from Tools.tool import randomUserAgent, get_today
+from Tools.tool import randomUserAgent, get_today, t_sleep
 
 from Tools.log import log_line, log
 
@@ -89,6 +87,9 @@ class ZqrbSpider():
         :param url:
         :return:
         '''
+
+        t_sleep()
+
         header = self.get_news_header()
         html = requests.get(url, headers=header)
         html.encoding = 'utf-8'

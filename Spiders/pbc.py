@@ -7,7 +7,7 @@ import js2py
 from lxml import etree
 from Model.news import News
 from Services.MogoMgr import MogoMgr
-from Tools.tool import randomUserAgent
+from Tools.tool import randomUserAgent, t_sleep
 
 from Tools.log import log_line, log
 
@@ -137,6 +137,7 @@ class PbcSpider():
         '''
         请求每一个新闻详情
         '''
+        t_sleep()
         html = self.get_html(url)
         response = etree.HTML(html.text)
         log('当前访问的URL', url, html.status_code)
@@ -269,7 +270,7 @@ class PbcSpider():
         except Exception as e:
             con_list = ['未知']
         content = ''.join(con_list).strip()
-        log('法律法规', content)
+        # log('法律法规', content)
         return title, date, content
 
     def send(self, dest_url, get_news_list, parser_news):

@@ -3,7 +3,7 @@ import requests
 from lxml import etree
 from Model.news import News
 from Services.MogoMgr import MogoMgr
-from Tools.tool import randomUserAgent
+from Tools.tool import randomUserAgent, t_sleep
 from Tools.log import log_line, log
 
 
@@ -96,6 +96,8 @@ class SzJrjSpider():
         :param url:
         :return:
         '''
+        t_sleep()
+
         html = requests.get(url, headers=headers)
         html.encoding = 'utf-8'
 

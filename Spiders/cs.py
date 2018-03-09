@@ -4,7 +4,7 @@ import re
 from lxml import etree
 from Model.news import News
 from Services.MogoMgr import MogoMgr
-from Tools.tool import randomUserAgent
+from Tools.tool import randomUserAgent, t_sleep
 
 from Tools.log import log_line, log
 
@@ -84,6 +84,8 @@ class CsSpider():
         :param url:
         :return:
         '''
+        t_sleep()
+
         header = self.get_news_header()
         html = requests.get(url, headers=header)
         html.encoding = 'gbk'

@@ -4,7 +4,7 @@ import datetime
 
 def get_time():
 
-    time = datetime.datetime.now().strftime("%Y-%m-%d %H:%m")
+    time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     seq_str = '[taotaojin ' + time + '] '
     return seq_str
 

@@ -2,6 +2,7 @@ import arrow
 import requests
 from lxml import etree
 from Tools.log import log_line, log
+from Tools.tool import  t_sleep
 from Model.news import News
 from Services.MogoMgr import MogoMgr
 
@@ -53,6 +54,7 @@ class JingJiSpider(object):
         :return: 新闻model
         '''
         for r in newslist:
+            t_sleep()
 
             news = requests.get(r)
             news.encoding = 'utf-8'

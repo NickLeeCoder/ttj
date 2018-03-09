@@ -5,7 +5,7 @@ import arrow
 from lxml import etree
 from Model.news import News
 from Services.MogoMgr import MogoMgr
-from Tools.tool import randomUserAgent, get_today
+from Tools.tool import randomUserAgent, t_sleep
 
 from Tools.log import log_line, log
 
@@ -62,8 +62,7 @@ class StcnSpider():
         return urls
 
 
-    # def parser_url(self, url):
-    #     return self.get_base_url() + url
+
 
     def send_request(self, urls):
         news_list = []
@@ -91,6 +90,8 @@ class StcnSpider():
         :param url:
         :return:
         '''
+        t_sleep()
+
         header = self.get_news_header()
         html = requests.get(url, headers=header)
         html.encoding = 'utf-8'
@@ -130,14 +131,6 @@ class StcnSpider():
         # log('content', content)
         return title, date, content
 
-
-    # def get_base_url(self):
-    #     year, month, day = get_today()
-    #     year = str(year)
-    #     month = str(month) if month >= 10 else '0' + str(month)
-    #     day = str(day) if day >= 10 else '0' + str(day)
-    #
-    #     return 'http://epaper.zqrb.cn/html/{0}-{1}/{2}/'.format(year, month, day)
 
 
     def run(self):

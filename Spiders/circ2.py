@@ -8,6 +8,10 @@ from Tools.tool import randomUserAgent
 from Tools.log import log_line, log
 
 
+'''
+待核实 貌似未完成!!
+'''
+
 
 class Circ2Spider():
 

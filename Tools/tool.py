@@ -1,6 +1,6 @@
 
 
-import random
+import random, time
 import base64
 from datetime import datetime
 from Setting.setting import Setting
@@ -16,6 +16,9 @@ def get_today():
     now = datetime.now()
     return now.year, now.month, now.day
 
+
+def t_sleep(sec=0):
+    time.sleep(sec)
 
 def get_keyword():
     '''

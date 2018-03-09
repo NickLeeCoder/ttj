@@ -4,7 +4,7 @@ import arrow
 from lxml import etree
 from Model.news import News
 from Services.MogoMgr import MogoMgr
-from Tools.tool import randomUserAgent
+from Tools.tool import randomUserAgent, t_sleep
 from Tools.log import log_line, log
 
 
@@ -95,6 +95,8 @@ class CircSpider():
         :param url:
         :return:
         '''
+        t_sleep()
+
         html = requests.get(url, headers=self.get_news_header())
         html.encoding = 'utf-8'
 
