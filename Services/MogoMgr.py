@@ -42,7 +42,10 @@ class MogoMgr(object):
 
     def get_news(self):
         # 获取需要发送的新闻
-        pass
+        return self.sheet.find({'show_sended': '1', 'is_sended': '0'})
+
+    def count(self):
+        return self.sheet.find().count()
 
     def is_inside(self, key, value):
         pass

@@ -47,17 +47,19 @@ class JingJiSpider(object):
             # print(url.split('.', -1)[0] + '_')
             print('多页')
 
-    def get_newsinfo(self, newslist):
+    def get_newsinfo(self, urls):
         '''
         访问每一条新闻详情
         :param newslist: 新闻链接集合
         :return: 新闻model
         '''
-        for r in newslist:
+        for url in urls:
             t_sleep()
 
-            news = requests.get(r)
+            news = requests.get(url)
             news.encoding = 'utf-8'
+            log('当前访问的URL', url)
+
             response = etree.HTML(news.text)
 
             item = self.parse_item(response, news.url)
@@ -86,16 +88,14 @@ class JingJiSpider(object):
         con_list = response.xpath('//div[@class="detailCont"]/p')
         content = self.pasre_content(con_list)
 
-
-
         item = News()
-        item.update = '0'
         item.title = title
         item.date = date
         item.content = content
         item.url = url
         item.spider_name = 'jingji'
         item.is_sended = '0'
+        item.show_sended = '1'
 
         return item
 
@@ -115,7 +115,6 @@ class JingJiSpider(object):
                 content = content + c[0].replace(' ', '')
 
         return content
-
 
     def run(self):
         log_line('JingJiSpider 启动！！！')
