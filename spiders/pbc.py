@@ -137,8 +137,6 @@ class PbcSpider():
         '''
         请求每一个新闻详情
         '''
-
-
         html = self.get_html(url)
         response = etree.HTML(html.text)
         log('当前访问的URL', url, html.status_code)
@@ -176,6 +174,57 @@ class PbcSpider():
         return urls
 
 
+    def parser_falvfagui(self, content):
+        html = etree.HTML(content.text)
+        doms = html.xpath('//td[@class="font14 bgdian"]')
+
+        urls = []
+
+        for e in doms:
+
+            url = self.host_url + e.xpath('./a/@href')[0].strip()
+            # log('标题', e.xpath('./a/text()')[0].strip())
+
+            # log('解析的新闻URL', url)
+
+            urls.append(url)
+        return urls
+
+
+    def parser_huobi(self, content):
+        html = etree.HTML(content.text)
+        doms = html.xpath('//a[@class="hei12jj"]')
+
+        urls = []
+
+        for e in doms:
+
+            url = self.host_url + e.xpath('./@href')[0].strip()
+            # log('标题', e.xpath('./a/text()')[0].strip())
+
+            log('解析的新闻URL', url)
+
+            urls.append(url)
+        return urls
+
+
+    def parser_xindai(self, content):
+        html = etree.HTML(content.text)
+        doms = html.xpath('//td[@class="unline"]')
+
+        urls = []
+
+        for e in doms:
+
+            url = self.host_url + e.xpath('./a/@href')[0].strip()
+            log('标题', e.xpath('./a/text()')[0].strip())
+
+            log('解析的新闻URL', url)
+
+            urls.append(url)
+        return urls
+
+
     def parse_gonggao_item(self, response):
         '''
         解析公告信息详情
@@ -197,22 +246,69 @@ class PbcSpider():
         except Exception as e:
             con_list = ['未知']
         content = ''.join(con_list).strip()
-        # log('content', content)
+        log('content', title, date)
         return title, date, content
 
+
+    def parser_common_item(self, response):
+        '''
+        解析法律法规  信贷政策
+        '''
+        try:
+            title = response.xpath('//h2[@style="font-size: 16px;color: #333;"]/text()')
+            title = ''.join(title).strip()
+        except Exception as e:
+            title = '未知'
+
+        try:
+            date = response.xpath('//span[@id="shijian"]/text()')[0].split()[0]
+        except Exception as e:
+            date = '未知'
+        try:
+            con_list = response.xpath('//div[@id="zoom"]/descendant-or-self::*/text()')
+        except Exception as e:
+            con_list = ['未知']
+        content = ''.join(con_list).strip()
+        log('法律法规', content)
+        return title, date, content
+
+    def send(self, dest_url, get_news_list, parser_news):
+        '''
+        获取人行 不同页面的内容 解析 再次请求新闻详情
+        :param dest_url:  目标URL
+        :param get_news_list: 获取目标URL中的新闻URL
+        :param parser_news: 解析新闻中的具体标题 日期等信息
+        :return: None
+        '''
+        content = self.get_html(dest_url)
+        urls = get_news_list(content)
+        news_list = self.send_request(urls, parser_news)
+        for news in news_list:
+            self.mgr.insert(news)
 
 
     def run(self):
 
-        # 解析公告信息
-        dest_url = 'http://www.pbc.gov.cn/rmyh/105208/index.html'
-        content = self.get_html(dest_url)
-        urls = self.parser_gonggao_list(content)
+        # 公告信息
+        # dest_url = 'http://www.pbc.gov.cn/rmyh/105208/index.html'
+        # self.send(dest_url, self.parser_gonggao_list, self.parse_gonggao_item)
 
-        news_list = self.send_request(urls, self.parse_gonggao_item)
+        # 法律法规
+        dest_url = 'http://www.pbc.gov.cn/tiaofasi/144941/index.html'
+        self.send(dest_url, self.parser_falvfagui, self.parser_common_item)
 
-        for news in news_list:
-            self.mgr.insert(news)
+
+        # 货币政策  暂未完成
+        # dest_url = 'http://www.pbc.gov.cn/rmyh/105145/index.html'
+        # self.send(dest_url, self.parser_falvfagui, self.parser_common_item)
+
+
+        # 信贷政策
+        # dest_url = 'http://www.pbc.gov.cn/jinrongshichangsi/147160/147289/index.html'
+        # self.send(dest_url, self.parser_xindai, self.parser_common_item)
+
+
+
 
 if __name__ == '__main__':
     PbcSpider().run()
