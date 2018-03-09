@@ -45,7 +45,7 @@ class MoHurdSpider():
         html = etree.HTML(html.text)
         items = html.xpath('//a[@style="color:#000;;font-size:12px;"]')
 
-        log_line(len(items))
+        # log_line(len(items))
 
         for item in items:
             self.parser_item(item)

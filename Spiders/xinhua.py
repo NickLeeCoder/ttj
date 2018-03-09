@@ -206,6 +206,7 @@ class XinHuaSpider():
         # 对财经版面的前两页数据进行爬取
         news_list_1 = self.get_itemlist(page='1')
         news_list_2 = self.get_itemlist(page='2')
+
         news_list_3 = self.get_lunbo()
         news_list_4 = self.get_money()
         news_list.extend(news_list_1)

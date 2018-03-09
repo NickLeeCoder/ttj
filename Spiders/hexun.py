@@ -49,7 +49,7 @@ class HeXunSpider():
         #     log(type(ur), ur)
         #
         #
-        log('数量', len(urls))
+        # log('数量', len(urls))
 
         return urls
 

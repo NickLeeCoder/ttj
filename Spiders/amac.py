@@ -43,7 +43,7 @@ class AmacSpider():
         html = etree.HTML(html.text)
         items = html.xpath('//div[@class="newsTrTitle"]/a')
 
-        log_line(len(items))
+        # log_line(len(items))
 
         for item in items:
             self.parser_item(item)
@@ -53,8 +53,9 @@ class AmacSpider():
         news.url = self.parser_url(item.xpath('./@href')[0], 'http://www.amac.org.cn')
         news.title = item.xpath('./text()')[0]
 
-        log(news.url, news.title)
+        # log(news.url, news.title)
         self.newslist.append(news)
+
 
     def parser_url(self, url, base_url):
         return base_url + url.split('../..')[1]
@@ -92,7 +93,7 @@ class AmacSpider():
 
         date = response.xpath('//div[@class="ldDate"]/text()')[0]
         date = date.split('：')[1]
-        log('内容', content)
+        # log('内容', content)
         return date, content
 
     def update_news(self, url, content, date):

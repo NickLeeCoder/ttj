@@ -52,7 +52,7 @@ class Amac2Spider():
         news.title = item.xpath('./a/text()')[0]
         news.date = item.getnext().xpath('./text()')[0]
 
-        log(news.url, news.title, news.date)
+        # log(news.url, news.title, news.date)
         self.newslist.append(news)
 
     def parser_url(self, url, base_url):
@@ -89,7 +89,7 @@ class Amac2Spider():
         con_list = response.xpath('//div[@class="ldContent"]/descendant-or-self::*/text()')
         content = ''.join(con_list).strip().replace('\r\n', '')
 
-        log('内容', content)
+        # log('内容', content)
         return content
 
     def update_news(self, url, content):

@@ -21,27 +21,30 @@ from Spiders import xinhua
 from Spiders import zqrb
 
 
-amac.AmacSpider.run()
-amac2.Amac2Spider.run()
-bjjrj.BjjrjSpider().run()
-cbrc.CbrcSpider().run()
-cctv.CctvSpider().run()
-circ.CircSpider().run()
-circ2.Circ2Spider().run()
-cnstock.CnstockSpider().run()
-cs.CsSpider().run()
-csrc.CsrcSpider().run()
-fangchan.FangChanSpider().run()
-gzjrj.GzjrjSpider().run()
-hexun.HeXunSpider().run()
-jingji.JingJiSpider().run()
-mohurd.MoHurdSpider().run()
-pbc.PbcSpider().run()
-shanghai.ShangHaiSpider().run()
-stcn.StcnSpider().run()
-szjrj.SzJrjSpider().run()
-xinhua.XinHuaSpider().run()
-zqrb.ZqrbSpider().run()
+
+if __name__ == '__main__':
+
+    amac.AmacSpider().run()
+    amac2.Amac2Spider().run()
+    bjjrj.BjjrjSpider().run()
+    cbrc.CbrcSpider().run()
+    cctv.CctvSpider().run()
+    circ.CircSpider().run()
+    circ2.Circ2Spider().run()
+    cnstock.CnstockSpider().run()
+    cs.CsSpider().run()
+    csrc.CsrcSpider().run()
+    fangchan.FangChanSpider().run()
+    gzjrj.GzjrjSpider().run()
+    hexun.HeXunSpider().run()
+    jingji.JingJiSpider().run()
+    mohurd.MoHurdSpider().run()
+    pbc.PbcSpider().run()
+    shanghai.ShangHaiSpider().run()
+    stcn.StcnSpider().run()
+    szjrj.SzJrjSpider().run()
+    xinhua.XinHuaSpider().run()
+    zqrb.ZqrbSpider().run()
 
 
 

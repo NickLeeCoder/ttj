@@ -49,7 +49,7 @@ class CircSpider():
         items = html.xpath('//td[@class="hui14"]')
 
 
-        log(len(items))
+        # log(len(items))
 
         for item in items:
             self.parser_item(item)
@@ -67,7 +67,7 @@ class CircSpider():
         news.date = date
 
 
-        log(news.url, news.title, news.date)
+        # log(news.url, news.title, news.date)
 
         self.newslist.append(news)
 

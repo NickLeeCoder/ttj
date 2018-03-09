@@ -202,7 +202,7 @@ class PbcSpider():
             url = self.host_url + e.xpath('./@href')[0].strip()
             # log('标题', e.xpath('./a/text()')[0].strip())
 
-            log('解析的新闻URL', url)
+            # log('解析的新闻URL', url)
 
             urls.append(url)
         return urls
@@ -217,9 +217,9 @@ class PbcSpider():
         for e in doms:
 
             url = self.host_url + e.xpath('./@href')[0].strip()
-            log('标题', e.xpath('./text()')[0].strip())
+            # log('标题', e.xpath('./text()')[0].strip())
 
-            log('解析的新闻URL', url)
+            # log('解析的新闻URL', url)
 
             urls.append(url)
         return urls
@@ -246,7 +246,7 @@ class PbcSpider():
         except Exception as e:
             con_list = ['未知']
         content = ''.join(con_list).strip()
-        log('content', title, date)
+        # log('content', title, date)
         return title, date, content
 
 
@@ -295,8 +295,8 @@ class PbcSpider():
         self.send(dest_url, self.parser_gonggao_list, self.parse_gonggao_item)
 
         # 法律法规
-        # dest_url = 'http://www.pbc.gov.cn/tiaofasi/144941/index.html'
-        # self.send(dest_url, self.parser_falvfagui, self.parser_common_item)
+        dest_url = 'http://www.pbc.gov.cn/tiaofasi/144941/index.html'
+        self.send(dest_url, self.parser_falvfagui, self.parser_common_item)
 
 
         # 货币政策  暂未完成
@@ -305,8 +305,8 @@ class PbcSpider():
 
 
         # 信贷政策
-        # dest_url = 'http://www.pbc.gov.cn/jinrongshichangsi/147160/147289/index.html'
-        # self.send(dest_url, self.parser_xindai, self.parser_common_item)
+        dest_url = 'http://www.pbc.gov.cn/jinrongshichangsi/147160/147289/index.html'
+        self.send(dest_url, self.parser_xindai, self.parser_common_item)
 
 
 

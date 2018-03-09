@@ -104,9 +104,12 @@ class CctvSpider():
             date = arrow.get(date).format('YYYY-MM-DD')
 
         except Exception as e:
+            try:
+                date = response.xpath('//span[@class="info"]/i/text()')[0].split()[1]
+                date = arrow.get(date).format('YYYY-MM-DD')
+            except Exception as e:
+                date = '未知'
 
-            date = response.xpath('//span[@class="info"]/i/text()')[0].split()[1]
-            date = arrow.get(date).format('YYYY-MM-DD')
 
         try:
             con_list = response.xpath('//div[@class="cnt_bd"]/p')
@@ -136,27 +139,6 @@ class CctvSpider():
 
         return content
 
-
-
-    def test(self):
-        '''
-        测试无头浏览器爬取
-        :return:
-        '''
-        from selenium import webdriver
-        url = "http://jingji.cctv.com/"
-        driver = webdriver.PhantomJS(executable_path='/usr/local/Cellar/phantomjs/2.1.1/bin/phantomjs')
-        # 这个路径就是你添加到PATH的路径
-        driver.get(url)
-        # print(driver.page_source)
-
-        html = etree.HTML(driver.page_source)
-        # res = html.xpath('//div[@class="ecoA9805_con02"]')
-        res = html.xpath('//span[@class="l"]/a/@href')
-        res = html.xpath('//span[@class="l"]/a/text()')
-
-
-        log(len(res), res)
 
 
     def run(self):

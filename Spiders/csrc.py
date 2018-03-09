@@ -48,7 +48,7 @@ class CsrcSpider():
         html = etree.HTML(html.text)
         items = html.xpath('//div[@class="row"]')
 
-        log_line(len(items))
+        # log_line(len(items))
 
         for item in items:
             self.parser_item(item)
@@ -62,7 +62,7 @@ class CsrcSpider():
         news.title = item.xpath('./li[@class="mc"]/div/a/text()')[0]
         news.date = arrow.get(date).format('YYYY-MM-DD')
 
-        log(news.url, news.title, news.date)
+        # log(news.url, news.title, news.date)
         self.newslist.append(news)
 
     def parser_url(self, url, base_url):
@@ -109,9 +109,6 @@ class CsrcSpider():
         for url in self.start_urls:
             self.get_html(url)
             self.send_request(self.get_newsUrls())
-
-            for news in self.newslist:
-                log(news.url, news.content)
 
             for news in self.newslist:
                 find_one = self.mgr.find_one('url', news.url)

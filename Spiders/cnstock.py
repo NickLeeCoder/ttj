@@ -57,7 +57,7 @@ class CnstockSpider():
         #     log(ur)
 
 
-        log('数量', len(urls))
+        # log('数量', len(urls))
         return set(urls)
 
     def send_request(self, urls):

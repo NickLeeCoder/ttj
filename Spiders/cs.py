@@ -51,7 +51,7 @@ class CsSpider():
         for ur in  urls:
             new_urls.append(self.parser_url(ur))
 
-        log('数量', len(urls))
+        # log('数量', len(urls))
         return new_urls
 
 
