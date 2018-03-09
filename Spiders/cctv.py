@@ -160,6 +160,9 @@ class CctvSpider():
 
 
     def run(self):
+
+        log_line('CctvSpider 启动！！！')
+
         urls = []
         url = 'http://jingji.cctv.com/'
         urls_1 = self.get_html(url)

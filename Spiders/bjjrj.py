@@ -93,6 +93,9 @@ class BjjrjSpider():
 
 
     def run(self):
+        log_line('BjjrjSpider 启动！！！')
+
+
         urls = []
         url = 'http://www.bjjrj.gov.cn/zcfg/c19-list-1.html'
         urls_1 = self.get_html(url)

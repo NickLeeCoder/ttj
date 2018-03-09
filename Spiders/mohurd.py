@@ -93,6 +93,7 @@ class MoHurdSpider():
                 news.content = content
 
     def run(self):
+        log_line('MoHurdSpider 启动！！！')
 
         for url in self.start_urls:
             self.get_html(url)

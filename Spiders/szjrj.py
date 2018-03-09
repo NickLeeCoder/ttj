@@ -119,6 +119,8 @@ class SzJrjSpider():
 
 
     def run(self):
+        log_line('SzJrjSpider 启动！！！')
+
         news_list = []
 
         url_gh = 'http://www.jr.sz.gov.cn/sjrb/xxgk/sjtj/zxtjxx/'

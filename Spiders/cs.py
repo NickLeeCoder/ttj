@@ -9,7 +9,7 @@ from Tools.tool import randomUserAgent
 from Tools.log import log_line, log
 
 
-class HeXunSpider():
+class CsSpider():
 
     def __init__(self):
         self.headers = {}
@@ -127,6 +127,7 @@ class HeXunSpider():
         return title, date, content
 
     def run(self):
+        log_line('CsSpider 启动！！！')
 
         start_urls = [
             'http://www.cs.com.cn/',
@@ -140,4 +141,4 @@ class HeXunSpider():
                 self.mgr.insert(news)
 
 if __name__ == '__main__':
-    HeXunSpider().run()
+    CsSpider().run()

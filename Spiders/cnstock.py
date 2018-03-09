@@ -127,6 +127,8 @@ class CnstockSpider():
 
 
     def run(self):
+        log_line('CnstockSpider 启动！！！')
+
         url = 'http://www.cnstock.com/'
 
         urls = self.get_html(url)

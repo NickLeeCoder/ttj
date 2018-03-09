@@ -98,6 +98,8 @@ class ShangHaiSpider():
 
 
     def run(self):
+        log_line('ShangHaiSpider 启动！！！')
+
         url = 'http://www.shanghai.gov.cn/nw2/nw2314/nw2319/nw41893/index.html'
         urls = self.get_html(url)
 

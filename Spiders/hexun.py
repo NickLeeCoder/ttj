@@ -118,6 +118,8 @@ class HeXunSpider():
         return title, date, content
 
     def run(self):
+        log_line('HeXunSpider 启动！！！')
+
 
         start_urls = [
             'http://www.hexun.com/',

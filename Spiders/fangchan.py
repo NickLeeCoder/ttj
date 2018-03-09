@@ -99,6 +99,9 @@ class FangChanSpider():
 
     def run(self):
 
+        log_line('FangChanSpider 启动！！！')
+
+
         start_urls = [
             'http://www.fangchan.com/policy/28/',
             'http://www.fangchan.com/plus/nlist.php?tid=2&tags=%E5%8E%9F%E5%88%9B',

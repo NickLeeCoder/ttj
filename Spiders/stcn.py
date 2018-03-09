@@ -141,6 +141,8 @@ class StcnSpider():
 
 
     def run(self):
+        log_line('StcnSpider 启动！！！')
+
         url = 'http://www.stcn.com/'
 
         urls = self.get_html(url)

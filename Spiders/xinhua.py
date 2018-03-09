@@ -200,6 +200,8 @@ class XinHuaSpider():
         return content
 
     def run(self):
+        log_line('XinHuaSpider 启动！！！')
+
         news_list = []
         # 对财经版面的前两页数据进行爬取
         news_list_1 = self.get_itemlist(page='1')

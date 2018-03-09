@@ -282,16 +282,17 @@ class PbcSpider():
         '''
         content = self.get_html(dest_url)
         urls = get_news_list(content)
-        # news_list = self.send_request(urls, parser_news)
-        # for news in news_list:
-        #     self.mgr.insert(news)
+        news_list = self.send_request(urls, parser_news)
+        for news in news_list:
+            self.mgr.insert(news)
 
 
     def run(self):
+        log_line('PbcSpider 启动！！！')
 
         # 公告信息
-        # dest_url = 'http://www.pbc.gov.cn/rmyh/105208/index.html'
-        # self.send(dest_url, self.parser_gonggao_list, self.parse_gonggao_item)
+        dest_url = 'http://www.pbc.gov.cn/rmyh/105208/index.html'
+        self.send(dest_url, self.parser_gonggao_list, self.parse_gonggao_item)
 
         # 法律法规
         # dest_url = 'http://www.pbc.gov.cn/tiaofasi/144941/index.html'
@@ -299,8 +300,8 @@ class PbcSpider():
 
 
         # 货币政策  暂未完成
-        dest_url = 'http://www.pbc.gov.cn/rmyh/105145/index.html'
-        self.send(dest_url, self.parser_xindai, self.parser_common_item)
+        # dest_url = 'http://www.pbc.gov.cn/rmyh/105145/index.html'
+        # self.send(dest_url, self.parser_xindai, self.parser_common_item)
 
 
         # 信贷政策

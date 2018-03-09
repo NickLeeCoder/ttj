@@ -102,6 +102,7 @@ class AmacSpider():
                 news.date = date
 
     def run(self):
+        log_line('AmacSpider 启动！！！')
 
         for url in self.start_urls:
             self.get_html(url)

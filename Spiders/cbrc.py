@@ -95,6 +95,8 @@ class CbrcSpider():
         return content
 
     def run(self):
+        log_line('CbrcSpider 启动！！！')
+
         urls = self.get_html(self.start_url)
         self.send_request(urls)
 

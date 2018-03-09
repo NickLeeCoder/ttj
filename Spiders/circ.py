@@ -110,6 +110,9 @@ class CircSpider():
                 news.content = content
 
     def run(self):
+
+        log_line('CircSpider 启动！！！')
+
         for url in self.start_urls:
             self.get_html(url)
             self.send_request(self.get_newsUrls())

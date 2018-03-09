@@ -1,9 +1,9 @@
 
 from Setting.setting  import Setting
 import smtplib
-from Email.header import Header
-from Email.utils import parseaddr, formataddr
-from Email.mime.text import MIMEText
+from email.header import Header
+from email.utils import parseaddr, formataddr
+from email.mime.text import MIMEText
 
 
 class EmailManager(object):
@@ -16,9 +16,12 @@ class EmailManager(object):
         self._sender = self._user
         self._templates = {}
 
+    def get_emails(self):
+        return ['253862014@qq.com']
 
 
-    def get_content(self):
+
+    def get_content(self, news_list=None):
         """获取邮件模版"""
         me = u'淘淘金新闻收集 <%s>' % 'fxxclwk@163.com'
         print(me)
@@ -64,6 +67,5 @@ class EmailManager(object):
 
 if __name__ == '__main__':
     manager = EmailManager(Setting.SERVER_USER, Setting.SERVER_PASSWORD)
-    res = manager.send(['253862014@qq.com'])
-    print(res)
+    manager.send(manager.get_emails())
 

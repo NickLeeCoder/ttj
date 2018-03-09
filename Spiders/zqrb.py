@@ -145,6 +145,8 @@ class ZqrbSpider():
         return 'http://epaper.zqrb.cn/html/{0}-{1}/{2}/node_2.htm'.format(year, month, day)
 
     def run(self):
+        log_line('ZqrbSpider 启动！！！')
+
         url = self.get_start_url()
 
         # log(url)

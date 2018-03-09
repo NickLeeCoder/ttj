@@ -107,8 +107,11 @@ class GzjrjSpider():
 
 
     def run(self):
-        url = 'http://www.gzjr.gov.cn/gzjr/zchgh/list.shtml'
-        urls = self.get_html(url)
+        log_line('GzjrjSpider 启动！！！')
+
+        pass
+        # url = 'http://www.gzjr.gov.cn/gzjr/zchgh/list.shtml'
+        # urls = self.get_html(url)
 
         # news_list = self.send_request(urls)
         #

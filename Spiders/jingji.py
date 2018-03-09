@@ -1,7 +1,7 @@
 import arrow
 import requests
 from lxml import etree
-
+from Tools.log import log_line, log
 from Model.news import News
 from Services.MogoMgr import MogoMgr
 
@@ -116,6 +116,8 @@ class JingJiSpider(object):
 
 
     def run(self):
+        log_line('JingJiSpider 启动！！！')
+
         news_list = self.get_newslist()
         self.get_newsinfo(news_list)
 

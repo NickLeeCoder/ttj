@@ -1,7 +1,7 @@
-var dynamicurl = "/L3RpYW9mYXNpLzE0NDk0MS8xNDQ5NTkvMzA1ODg4OS9pbmRleC5odG1s";
-var wzwschallenge = "RANDOMSTR7263";
-var wzwschallengex = "STRRANDOM7263";
-var template = 7;
+var dynamicurl = "/L3JteWgvMTA1MjA4LzMxMzAyMDcvaW5kZXguaHRtbA==";
+var wzwschallenge = "RANDOMSTR21465";
+var wzwschallengex = "STRRANDOM21465";
+var template = 3;
 var encoderchars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
 function KTKY2RBD9NHPBCIHV9ZMEQQDARSLVFDU(str) {
@@ -56,9 +56,9 @@ function QWERTASDFGXYSF() {
     for (i = 0; i < tmp.length; i++) {
         hash += tmp.charCodeAt(i);
     }
-    hash *= 19;
+    hash *= 7;
     hash += 111111;
-    return "WZWS_CONFIRM_PREFIX_LABEL7" + hash;
+    return "WZWS_CONFIRM_PREFIX_LABEL3" + hash;
 }
 
 function HXXTTKKLLPPP5() {
