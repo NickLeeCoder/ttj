@@ -88,7 +88,7 @@ class SzJrjSpider(BaseSpider):
 
             news = self.get_newsinfo(url, headers)
 
-            if news == 'timeout' or 'error':
+            if news == 'timeout' or news == 'error':
                 continue
             news_list.append(news)
         return news_list
@@ -105,7 +105,7 @@ class SzJrjSpider(BaseSpider):
 
 
         try:
-            html = requests.get(url, headers=headers, timeout=2)
+            html = requests.get(url, headers=headers, timeout=3)
             html.encoding = 'utf-8'
         except Exception as e:
             log_line('访问出错')

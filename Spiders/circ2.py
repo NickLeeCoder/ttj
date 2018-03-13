@@ -43,13 +43,13 @@ class Circ2Spider(BaseSpider):
         t_sleep()
         # log('当前访问的URL', url)
 
-        html = requests.get(url, headers=self.get_news_header(), timeout=2)
+        html = requests.get(url, headers=self.get_news_header(), timeout=3)
         html.encoding = 'utf-8'
 
 
 
         # try:
-        #     html = requests.get(url, headers=self.get_news_header(), timeout=2)
+        #     html = requests.get(url, headers=self.get_news_header(), timeout=3)
         #     html.encoding = 'utf-8'
         # except Exception as e:
         #     log_line('访问出错')

@@ -66,7 +66,7 @@ class HeXunSpider(BaseSpider):
 
             news = self.get_newsinfo(url)
 
-            if news == 'error' or 'timeout':
+            if news == 'error' or news == 'timeout':
                 continue
 
             news_list.append(news)
@@ -84,7 +84,7 @@ class HeXunSpider(BaseSpider):
 
 
         try:
-            html = requests.get(url, headers=self.get_news_header(), timeout=2)
+            html = requests.get(url, headers=self.get_news_header(), timeout=3)
             html.encoding = 'gbk'
         except Exception as e:
             log_line('访问出错')

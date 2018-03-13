@@ -47,7 +47,7 @@ class ZqrbSpider(BaseSpider):
         :param url:
         :return:
         '''
-        html = requests.get(url, headers=self.get_news_header(), timeout=2)
+        html = requests.get(url, headers=self.get_news_header(), timeout=3)
         html.encoding = 'utf-8'
 
         html = etree.HTML(html.text)
@@ -101,7 +101,7 @@ class ZqrbSpider(BaseSpider):
         header = self.get_news_header()
 
         try:
-            html = requests.get(url, headers=header, timeout=2)
+            html = requests.get(url, headers=header, timeout=3)
             html.encoding = 'utf-8'
         except Exception as e:
             log_line('访问出错')
@@ -114,7 +114,7 @@ class ZqrbSpider(BaseSpider):
         response = etree.HTML(html.text)
         log('当前访问的URL结果', html.status_code)
 
-        if html.status_code not in (200, 301, 302):
+        if html.status_code != 200:
             log('访问的URL出错！！！', url)
             return 'error'
 

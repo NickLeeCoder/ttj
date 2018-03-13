@@ -73,7 +73,7 @@ class Amac2Spider(BaseSpider):
                 continue
             content = self.parser_data(url)
 
-            if content == 'error' or 'timeout':
+            if content in ('error', 'timeout'):
                 continue
             self.update_news(url, content)
 
@@ -89,7 +89,7 @@ class Amac2Spider(BaseSpider):
 
 
         try:
-            html = requests.get(url, headers=self.get_news_header(), timeout=2)
+            html = requests.get(url, headers=self.get_news_header(), timeout=3)
             html.encoding = 'utf-8'
         except Exception as e:
             log_line('访问出错')

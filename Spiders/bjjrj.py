@@ -63,8 +63,13 @@ class BjjrjSpider(BaseSpider):
                 continue
             news = self.get_newsinfo(url)
 
-            if news == 'timeout'or 'error':
+            log('新闻', news)
+
+            if news == 'timeout'or news == 'error':
+                log_line('timeout error')
                 continue
+
+            log('添加')
 
             news_list.append(news)
         return news_list
@@ -81,7 +86,7 @@ class BjjrjSpider(BaseSpider):
 
 
         try:
-            html = requests.get(url, headers=self.get_news_header(), timeout=2)
+            html = requests.get(url, headers=self.get_news_header(), timeout=3)
             html.encoding = 'utf-8'
         except Exception as e:
             log_line('访问出错')
@@ -91,6 +96,7 @@ class BjjrjSpider(BaseSpider):
             return 'timeout'
 
         if html.status_code != 200:
+            log_line('请求状态不是200')
             return 'error'
 
         response = etree.HTML(html.text)
@@ -125,10 +131,12 @@ class BjjrjSpider(BaseSpider):
 
         news_list = self.send_request(urls)
 
+        log_line(len(news_list))
+
         for news in news_list:
             self.mgr.insert(news)
 
-        self.__class__().re_send()
+        # self.__class__().re_send()
 
 
 if __name__ == '__main__':

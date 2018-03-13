@@ -73,7 +73,7 @@ class CctvSpider(BaseSpider):
                 log(url)
                 continue
             news = self.get_newsinfo(url)
-            if news == 'timeout' or 'error':
+            if news == 'timeout' or news == 'error':
                 continue
             news_list.append(news)
         return news_list
@@ -89,7 +89,7 @@ class CctvSpider(BaseSpider):
         log('当前访问的URL', url)
 
         try:
-            html = requests.get(url, headers=self.get_news_header(), timeout=2)
+            html = requests.get(url, headers=self.get_news_header(), timeout=3)
             html.encoding = 'utf-8'
         except Exception as e:
             log_line('访问出错')

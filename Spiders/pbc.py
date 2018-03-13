@@ -106,7 +106,7 @@ class PbcSpider(BaseSpider):
 
 
         try:
-            content = r.get(self.host_url + dynamicurl, timeout=2)
+            content = r.get(self.host_url + dynamicurl, timeout=3)
             content.encoding = 'utf-8'
         except Exception as e:
             log_line('访问出错')
@@ -135,7 +135,7 @@ class PbcSpider(BaseSpider):
 
             news = self.get_newsinfo(url, parser_item_fuc)
 
-            if news == 'error' or 'timeout':
+            if news == 'error' or news == 'timeout':
                 continue
 
             news_list.append(news)

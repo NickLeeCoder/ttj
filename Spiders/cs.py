@@ -71,8 +71,7 @@ class CsSpider(BaseSpider):
 
             news = self.get_newsinfo(url)
 
-            if news == 'error':
-                log('访问的新闻不存在 继续访问下一个URL')
+            if news == 'error' or news == 'timeout':
                 continue
 
             news_list.append(news)
@@ -90,7 +89,7 @@ class CsSpider(BaseSpider):
 
 
         try:
-            html = requests.get(url, headers=self.get_news_header(), timeout=2)
+            html = requests.get(url, headers=self.get_news_header(), timeout=3)
             html.encoding = 'gbk'
         except Exception as e:
             log_line('访问出错')

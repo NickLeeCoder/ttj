@@ -82,7 +82,7 @@ class CsrcSpider(BaseSpider):
                 log(url)
                 continue
             content = self.get_content(url)
-            if content == 'error' or 'timeout':
+            if content == 'error' or content =='timeout':
                 continue
             self.update_content(url, content)
 
@@ -97,7 +97,7 @@ class CsrcSpider(BaseSpider):
 
 
         try:
-            html = requests.get(url, headers=self.get_news_header(), timeout=2)
+            html = requests.get(url, headers=self.get_news_header(), timeout=3)
             html.encoding = 'utf-8'
         except Exception as e:
             log_line('访问出错')

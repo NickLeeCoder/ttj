@@ -87,7 +87,7 @@ class CbrcSpider(BaseSpider):
 
 
         try:
-            html = requests.get(url, headers=self.get_news_header(), timeout=2)
+            html = requests.get(url, headers=self.get_news_header(), timeout=3)
             html.encoding = 'utf-8'
         except Exception as e:
             log_line('访问出错')

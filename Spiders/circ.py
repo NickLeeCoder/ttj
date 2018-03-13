@@ -88,7 +88,7 @@ class CircSpider(BaseSpider):
                 log(url)
                 continue
             content = self.get_content(url)
-            if content == 'timeout' or 'error':
+            if content == 'timeout' or content =='error':
                 continue
             self.update_content(url, content)
 
@@ -103,7 +103,7 @@ class CircSpider(BaseSpider):
 
 
         try:
-            html = requests.get(url, headers=self.get_news_header(), timeout=2)
+            html = requests.get(url, headers=self.get_news_header(), timeout=3)
             html.encoding = 'utf-8'
         except Exception as e:
             log_line('访问出错')

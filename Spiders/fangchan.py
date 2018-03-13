@@ -53,7 +53,7 @@ class FangChanSpider(BaseSpider):
                 continue
             news = self.get_newsinfo(url)
 
-            if news == 'error' or 'timeout':
+            if news == 'error' or news == 'timeout':
                 continue
             news_list.append(news)
         return news_list
@@ -70,7 +70,7 @@ class FangChanSpider(BaseSpider):
 
 
         try:
-            html = requests.get(url, headers=self.get_news_header(), timeout=2)
+            html = requests.get(url, headers=self.get_news_header(), timeout=3)
             html.encoding = 'utf-8'
         except Exception as e:
             log_line('访问出错')

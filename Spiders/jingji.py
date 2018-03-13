@@ -60,7 +60,7 @@ class JingJiSpider(BaseSpider):
 
 
             try:
-                html = requests.get(url, timeout=2)
+                html = requests.get(url, timeout=3)
                 html.encoding = 'gbk'
             except Exception as e:
                 log_line('访问出错')
