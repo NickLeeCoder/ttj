@@ -63,6 +63,7 @@ class CircSpider(BaseSpider):
         date = item.getnext().xpath('./text()')[0][1:-1]
 
         news = News()
+        news.spider_name = 'circ'
         news.url = self.parser_url(url, 'http://www.circ.gov.cn')
         news.title = item.xpath('./a/text()')[0]
         news.date = date

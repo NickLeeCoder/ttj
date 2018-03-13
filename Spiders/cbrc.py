@@ -38,6 +38,7 @@ class CbrcSpider(BaseSpider):
 
         for item in items:
             news = News()
+            news.spider_name = 'cbrc'
             news.url = item.xpath('./@href')[0]
             news.title = item.xpath('./@title')[0]
             news.date = item.getparent().getnext().xpath('./text()')[0].strip()

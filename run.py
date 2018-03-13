@@ -1,4 +1,5 @@
 import threading, time
+from Tools.log import log_line, log
 
 from Spiders import amac
 from Spiders import amac2
@@ -26,27 +27,27 @@ from Spiders import zqrb
 if __name__ == '__main__':
 
     targets = [
-        # amac.AmacSpider().run,
-        # amac2.Amac2Spider().run,
-        # bjjrj.BjjrjSpider().run,
-        # cbrc.CbrcSpider().run,
-        # cctv.CctvSpider().run,
-        # circ.CircSpider().run,
-        # circ2.Circ2Spider().run,  # 未完成！！检查！！
-        # cnstock.CnstockSpider().run,
-        # cs.CsSpider().run,
-        # csrc.CsrcSpider().run,
-        # fangchan.FangChanSpider().run,
-        # gzjrj.GzjrjSpider().run,
-        # hexun.HeXunSpider().run,
-        # jingji.JingJiSpider().run,
-        # mohurd.MoHurdSpider().run,
-        # pbc.PbcSpider().run,
-        # shanghai.ShangHaiSpider().run,
-        # stcn.StcnSpider().run,
-        # szjrj.SzJrjSpider().run,
+        amac.AmacSpider().run,
+        amac2.Amac2Spider().run,
+        bjjrj.BjjrjSpider().run,
+        cbrc.CbrcSpider().run,
+        cctv.CctvSpider().run,
+        circ.CircSpider().run,
+        circ2.Circ2Spider().run,  # 未完成！！检查！！
+        cnstock.CnstockSpider().run,
+        cs.CsSpider().run,
+        csrc.CsrcSpider().run,
+        fangchan.FangChanSpider().run,
+        gzjrj.GzjrjSpider().run,
+        hexun.HeXunSpider().run,
+        jingji.JingJiSpider().run,
+        mohurd.MoHurdSpider().run,
+        pbc.PbcSpider().run,
+        shanghai.ShangHaiSpider().run,
+        stcn.StcnSpider().run,
+        szjrj.SzJrjSpider().run,
         xinhua.XinHuaSpider().run,
-        # zqrb.ZqrbSpider().run,
+        zqrb.ZqrbSpider().run,
     ]
 
     start = time.time()
@@ -60,8 +61,8 @@ if __name__ == '__main__':
 
     for t in threads:
         t.join()
-    print('最后的最后')
 
+    log('准备发送邮件')
     print('耗时', time.time() - start)
 
 

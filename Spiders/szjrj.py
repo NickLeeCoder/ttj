@@ -121,6 +121,7 @@ class SzJrjSpider(BaseSpider):
 
         title, date, content = self.parse_item(response)
         news = News(title=title, date=date, content=content, url=url)
+        news.spider_name = 'szjrj'
         return news
 
 

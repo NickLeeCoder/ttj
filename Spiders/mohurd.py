@@ -53,6 +53,7 @@ class MoHurdSpider(BaseSpider):
 
     def parser_item(self, item):
         news = News()
+        news.spider_name = 'mohurd'
         news.url = item.xpath('./@href')[0]
         news.title = item.xpath('./text()')[0]
         news.date = item.getparent().getnext().xpath('./text()')[0][1:-1].replace('.', '-').strip()

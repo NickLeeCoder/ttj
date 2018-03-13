@@ -94,7 +94,7 @@ class HeXunSpider(BaseSpider):
             return 'timeout'
 
         if html.status_code != 200:
-            log('访问的URL出错！！！', url)
+            log('访问的url 状态不是200', url)
             return 'error'
 
         response = etree.HTML(html.text)
@@ -103,6 +103,7 @@ class HeXunSpider(BaseSpider):
 
         title, date, content = self.parse_item(response)
         news = News(title=title, date=date, content=content, url=url)
+        news.spider_name = 'hexun'
         return news
 
     def parse_item(self, response):

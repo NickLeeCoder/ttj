@@ -112,6 +112,7 @@ class CnstockSpider(BaseSpider):
 
         title, date, content = self.parse_item(response)
         news = News(title=title, date=date, content=content, url=url)
+        news.spider_name = 'cnstock'
         return news
 
     def parse_item(self, response):

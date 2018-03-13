@@ -166,6 +166,7 @@ class PbcSpider(BaseSpider):
 
         title, date, content = parser_item_fuc(response)
         news = News(title=title, date=date, content=content, url=url)
+        news.spider_name = 'pbc'
         return news
 
 

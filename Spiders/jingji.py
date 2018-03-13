@@ -118,8 +118,6 @@ class JingJiSpider(BaseSpider):
         item.content = content
         item.url = url
         item.spider_name = 'jingji'
-        item.is_sended = '0'
-        item.show_sended = '1'
 
         return item
 

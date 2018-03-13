@@ -59,6 +59,7 @@ class CsrcSpider(BaseSpider):
         date = item.xpath('./li[@class="fbrq"]/text()')[0]
 
         news = News()
+        news.spider_name = 'csrc'
         news.url = self.parser_url(url, 'http://www.csrc.gov.cn/pub/zjhpublic')
         news.title = item.xpath('./li[@class="mc"]/div/a/text()')[0]
         news.date = arrow.get(date).format('YYYY-MM-DD')

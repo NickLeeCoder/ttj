@@ -109,10 +109,7 @@ class ZqrbSpider(BaseSpider):
             print(e)
             return 'timeout'
 
-        # log(html.text)
-
         response = etree.HTML(html.text)
-        log('当前访问的URL结果', html.status_code)
 
         if html.status_code != 200:
             log('访问的URL出错！！！', url)
@@ -122,6 +119,7 @@ class ZqrbSpider(BaseSpider):
 
         title, date, content = self.parse_item(response)
         news = News(title=title, date=date, content=content, url=url)
+        news.spider_name = 'zqrb'
         return news
 
     def parse_item(self, response):

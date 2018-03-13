@@ -49,6 +49,7 @@ class Amac2Spider(BaseSpider):
 
     def parser_item(self, item):
         news = News()
+        news.spider_name = 'amac'
         news.url = self.parser_url(item.xpath('./a/@href')[0], 'http://www.amac.org.cn')
         news.title = item.xpath('./a/text()')[0]
         news.date = item.getnext().xpath('./text()')[0]
