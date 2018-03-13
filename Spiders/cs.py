@@ -51,12 +51,13 @@ class CsSpider(BaseSpider):
         new_urls = []
         for ur in  urls:
             new_urls.append(self.parser_url(ur))
+        # log(new_urls)
 
-        # log('数量', len(urls))
         return new_urls
 
 
     def parser_url(self, url):
+        log(url)
         return 'http://www.cs.com.cn' + url[1:]
 
     def send_request(self, urls):

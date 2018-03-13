@@ -71,12 +71,12 @@ class XinHuaSpider(BaseSpider):
         urls_1 = html.xpath('//li[@class="clearfix"]/h3/a/@href')
 
         # 只对新闻列表进行处理
-        # urls_2 = html.xpath('//li[@class="imp"]/a/@href')
-        # urls_3 = html.xpath('//div[@class="swiper-slide"]/a/@href')
+        urls_2 = html.xpath('//li[@class="imp"]/a/@href')
+        urls_3 = html.xpath('//div[@class="swiper-slide"]/a/@href')
 
         urls_all.extend(urls_1)
-        # urls_all.extend(urls_2)
-        # urls_all.extend(urls_3)
+        urls_all.extend(urls_2)
+        urls_all.extend(urls_3)
 
         # log(len(urls_all), urls_all)
 
@@ -91,6 +91,8 @@ class XinHuaSpider(BaseSpider):
                 continue
 
             news = self.get_iteminfo(url)
+            if news == 'timeout' or news == 'error':
+                continue
             news_list.append(news)
         return news_list
 
@@ -121,6 +123,8 @@ class XinHuaSpider(BaseSpider):
                     log(url)
                     continue
                 news = self.get_iteminfo(url)
+                if news == 'timeout' or news == 'error':
+                    continue
                 news_list.append(news)
         return news_list
 

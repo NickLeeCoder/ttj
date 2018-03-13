@@ -37,7 +37,12 @@ class JingJiSpider(BaseSpider):
 
         html = etree.HTML(html.text)
         # print(type(html))
-        news_list = html.xpath('//div[@class="Tlist"]/a/@href')
+        news_list = html.xpath('//a[@class="listTit"]/@href')
+        # tt = html.xpath('//a[@class="listTit"]/text()')
+
+
+        log(len(news_list))
+
 
         return news_list
 
@@ -61,7 +66,7 @@ class JingJiSpider(BaseSpider):
 
             try:
                 html = requests.get(url, timeout=3)
-                html.encoding = 'gbk'
+                html.encoding = 'utf-8'
             except Exception as e:
                 log_line('访问出错')
                 print(e)
@@ -87,18 +92,25 @@ class JingJiSpider(BaseSpider):
 
 
     def parse_item(self, response, url):
-        # 先判断是否为多页新闻 如果是 需要请求下一页
-        # global cc
-        # cc += 1
-        # print(str(cc) + 'hehe')
-        # title = (response.xpath('//h2[@class="titl"]/text()').extract())[0].strip()
-        title = (response.xpath('//h2[@class="titl"]/text()'))[0].strip()
 
-        date = (response.xpath('//p[@class="Wh"]/span[1]/text()'))[0].strip().split()[0]
-        date = str(arrow.get(date)).split('T')[0]
+        try:
+            title = (response.xpath('//h2[@class="titl"]/text()'))[0].strip()
+        except Exception as e:
+            title = '未知'
 
-        con_list = response.xpath('//div[@class="detailCont"]/p')
-        content = self.pasre_content(con_list)
+
+        try:
+            date = (response.xpath('//p[@class="Wh"]/span[1]/text()'))[0].strip().split()[0]
+            date = str(arrow.get(date)).split('T')[0]
+        except Exception as e:
+            date = '未知'
+
+
+        try:
+            con_list = response.xpath('//div[@class="detailCont"]/p')
+            content = self.pasre_content(con_list)
+        except Exception as e:
+            content = '未知'
 
         item = News()
         item.title = title
@@ -134,7 +146,7 @@ class JingJiSpider(BaseSpider):
         news_list = self.get_newslist()
         self.get_newsinfo(news_list)
 
-        self.__class__().re_send()
+        # self.__class__().re_send()
 
 
 

@@ -28,7 +28,7 @@ if __name__ == '__main__':
     targets = [
         # amac.AmacSpider().run,
         # amac2.Amac2Spider().run,
-        bjjrj.BjjrjSpider().run,
+        # bjjrj.BjjrjSpider().run,
         # cbrc.CbrcSpider().run,
         # cctv.CctvSpider().run,
         # circ.CircSpider().run,
@@ -45,7 +45,7 @@ if __name__ == '__main__':
         # shanghai.ShangHaiSpider().run,
         # stcn.StcnSpider().run,
         # szjrj.SzJrjSpider().run,
-        # xinhua.XinHuaSpider().run,
+        xinhua.XinHuaSpider().run,
         # zqrb.ZqrbSpider().run,
     ]
 

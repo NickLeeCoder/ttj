@@ -166,6 +166,7 @@ class CctvSpider(BaseSpider):
         urls_2 = self.get_jsondata()
         urls.extend(urls_1)
         urls.extend(urls_2)
+        urls = set(urls)
 
         news_list = self.send_request(urls)
 

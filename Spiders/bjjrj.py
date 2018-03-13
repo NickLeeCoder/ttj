@@ -62,14 +62,9 @@ class BjjrjSpider(BaseSpider):
                 log(url)
                 continue
             news = self.get_newsinfo(url)
-
-            log('新闻', news)
-
             if news == 'timeout'or news == 'error':
                 log_line('timeout error')
                 continue
-
-            log('添加')
 
             news_list.append(news)
         return news_list
@@ -136,7 +131,7 @@ class BjjrjSpider(BaseSpider):
         for news in news_list:
             self.mgr.insert(news)
 
-        # self.__class__().re_send()
+        self.__class__().re_send()
 
 
 if __name__ == '__main__':
