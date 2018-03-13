@@ -8,6 +8,7 @@ from Services.MogoMgr import MogoMgr
 from Tools.tool import randomUserAgent, t_sleep
 
 from Tools.log import log_line, log
+from Spiders.base_spider import BaseSpider
 
 '''
 暂未完成  所有新闻详情为图片 后续完成
@@ -17,7 +18,7 @@ from Tools.log import log_line, log
 '''
 
 
-class GzjrjSpider():
+class GzjrjSpider(BaseSpider):
 
     def __init__(self):
         self.headers = {}

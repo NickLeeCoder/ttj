@@ -8,9 +8,10 @@ from Model.news import News
 from Tools.log import log_line, log
 from Services.MogoMgr import MogoMgr
 from Tools.tool import randomUserAgent, t_sleep
+from Spiders.base_spider import BaseSpider
 
 
-class XinHuaSpider():
+class XinHuaSpider(BaseSpider):
 
 
     def __init__(self):
@@ -223,6 +224,9 @@ class XinHuaSpider():
 
         for news in news_list:
             self.mgr.insert(news)
+
+        self.__class__().re_send()
+
 
 
 if __name__ == '__main__':

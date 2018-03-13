@@ -6,17 +6,17 @@ from Services.MogoMgr import MogoMgr
 from Tools.tool import randomUserAgent, get_today, t_sleep
 
 from Tools.log import log_line, log
-from base_spider import  *
+from Spiders.base_spider import BaseSpider
 
-class ZqrbSpider():
+class ZqrbSpider(BaseSpider):
 
 
     def __init__(self):
         self.headers = {}
         self.date = self.get_date()
         self.mgr = MogoMgr()
-        self.retry = -1
-        self.retry_flag = -1
+        # self.retry = -1
+        # self.retry_flag = -1
         self.failurls = []
 
 
@@ -105,7 +105,7 @@ class ZqrbSpider():
             html.encoding = 'utf-8'
         except Exception as e:
             log_line('访问出错')
-            self.retry = 1
+            self.__class__.retry = 1
             print(e)
             return 'timeout'
 
@@ -170,10 +170,7 @@ class ZqrbSpider():
         for news in news_list:
             self.mgr.insert(news)
 
-        if self.retry != -1 and self.retry_flag == -1:
-            log_line('部分新闻访问出错 再次进行访问')
-            self.retry_flag = 1
-            self.run()
+        self.__class__().re_send()
 
 if __name__ == '__main__':
     ZqrbSpider().run()

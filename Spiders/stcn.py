@@ -8,9 +8,10 @@ from Services.MogoMgr import MogoMgr
 from Tools.tool import randomUserAgent, t_sleep
 
 from Tools.log import log_line, log
+from Spiders.base_spider import BaseSpider
 
 
-class StcnSpider():
+class StcnSpider(BaseSpider):
 
     def __init__(self):
         self.headers = {}
@@ -98,6 +99,8 @@ class StcnSpider():
         except Exception as e:
             log_line('访问出错')
             print(e)
+            self.__class__.retry = 1
+
             return 'timeout'
 
 
@@ -151,6 +154,9 @@ class StcnSpider():
 
         for news in news_list:
             self.mgr.insert(news)
+
+        self.__class__().re_send()
+
 
 if __name__ == '__main__':
     StcnSpider().run()

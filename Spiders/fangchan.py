@@ -8,9 +8,10 @@ from Services.MogoMgr import MogoMgr
 from Tools.tool import randomUserAgent, t_sleep
 
 from Tools.log import log_line, log
+from Spiders.base_spider import BaseSpider
 
 
-class FangChanSpider():
+class FangChanSpider(BaseSpider):
 
     def __init__(self):
         self.headers = {}
@@ -69,6 +70,8 @@ class FangChanSpider():
         except Exception as e:
             log_line('访问出错')
             print(e)
+            self.__class__.retry = 1
+
             return 'timeout'
 
 
@@ -131,10 +134,8 @@ class FangChanSpider():
                 self.mgr.insert(news)
 
 
-        if self.retry != -1 and self.retry_flag == -1:
-            log_line('部分新闻访问出错 再次进行访问')
-            self.retry_flag = 1
-            self.run()
+        self.__class__().re_send()
+
 
 if __name__ == '__main__':
     FangChanSpider().run()

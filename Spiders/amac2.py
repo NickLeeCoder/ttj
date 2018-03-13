@@ -5,9 +5,10 @@ from Model.news import News
 from Services.MogoMgr import MogoMgr
 from Tools.tool import randomUserAgent, t_sleep
 from Tools.log import log_line, log
+from Spiders.base_spider import BaseSpider
 
 
-class Amac2Spider():
+class Amac2Spider(BaseSpider):
 
     def __init__(self):
         self.headers = {}
@@ -88,6 +89,7 @@ class Amac2Spider():
         except Exception as e:
             log_line('访问出错')
             print(e)
+            self.__class__.retry = 1
             return 'timeout'
 
         response = etree.HTML(html.text)
@@ -118,10 +120,9 @@ class Amac2Spider():
                     log(news.url)
                     continue
                 self.mgr.insert(news)
-        if self.retry != -1 and self.retry_flag == -1:
-            log_line('部分新闻访问出错 再次进行访问')
-            self.retry_flag = 1
-            self.run()
+
+        self.__class__().re_send()
+
 
 if __name__ == '__main__':
     Amac2Spider().run()

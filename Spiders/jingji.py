@@ -5,6 +5,7 @@ from Tools.log import log_line, log
 from Tools.tool import  t_sleep
 from Model.news import News
 from Services.MogoMgr import MogoMgr
+from Spiders.base_spider import BaseSpider
 
 '''
 21经济网
@@ -20,7 +21,7 @@ url = 'http://www.21jingji.com/'
     '''
 
 
-class JingJiSpider(object):
+class JingJiSpider(BaseSpider):
 
 
     def get_newslist(self):
@@ -64,6 +65,8 @@ class JingJiSpider(object):
             except Exception as e:
                 log_line('访问出错')
                 print(e)
+                self.__class__.retry = 1
+
                 continue
 
             response = etree.HTML(html.text)
@@ -128,10 +131,8 @@ class JingJiSpider(object):
         news_list = self.get_newslist()
         self.get_newsinfo(news_list)
 
-        if self.retry != -1 and self.retry_flag == -1:
-            log_line('部分新闻访问出错 再次进行访问')
-            self.retry_flag = 1
-            self.run()
+        self.__class__().re_send()
+
 
 
 if __name__ == '__main__':
