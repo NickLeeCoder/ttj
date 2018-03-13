@@ -4,7 +4,7 @@ import arrow
 from lxml import etree
 from Model.news import News
 from Services.MogoMgr import MogoMgr
-from Tools.tool import randomUserAgent
+from Tools.tool import randomUserAgent, t_sleep
 from Tools.log import log_line, log
 
 
@@ -43,8 +43,18 @@ class Circ2Spider():
         :return:
         '''
 
-        html = requests.get(url, headers=self.get_news_header())
-        html.encoding = 'utf-8'
+        t_sleep()
+
+
+        try:
+            html = requests.get(url, headers=self.get_news_header(), timeout=2)
+            html.encoding = 'utf-8'
+        except Exception as e:
+            log_line('访问出错')
+            print(e)
+            return 'timeout'
+
+
 
         # log(html.text)
 
@@ -80,37 +90,6 @@ class Circ2Spider():
     def get_newsUrls(self):
         return [news.url for news in self.newslist]
 
-    # def send_request(self, urls):
-    #
-    #     for url in urls:
-    #         # 避免重复请求
-    #         find_one = self.mgr.find_one('url', url)
-    #         if find_one is not None:
-    #             log_line('该URL已经存在 无需请求')
-    #             log(url)
-    #             continue
-    #         content = self.get_content(url)
-    #         self.update_content(url, content)
-
-    # def get_content(self, url):
-    #     '''
-    #     请求每一个新闻详情
-    #     :param url:
-    #     :return:
-    #     '''
-    #     html = requests.get(url, headers=self.get_news_header())
-    #     html.encoding = 'utf-8'
-    #
-    #     response = etree.HTML(html.text)
-    #     log('当前访问的URL', url)
-    #
-    #     con_list = response.xpath('//span[@id="zoom"]/descendant-or-self::*/text()')
-    #     return ''.join(con_list).strip().replace('\r\n', '')
-
-    # def update_content(self, url, content):
-    #     for news in self.newslist:
-    #         if news.url == url:
-    #             news.content = content
 
     def run(self):
 
@@ -130,6 +109,11 @@ class Circ2Spider():
                     log(news.url)
                     continue
                 self.mgr.insert(news)
+
+        if self.retry != -1 and self.retry_flag == -1:
+            log_line('部分新闻访问出错 再次进行访问')
+            self.retry_flag = 1
+            self.run()
 
 if __name__ == '__main__':
     Circ2Spider().run()

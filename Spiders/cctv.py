@@ -83,8 +83,16 @@ class CctvSpider():
         :return:
         '''
         t_sleep()
-        html = requests.get(url, headers=self.get_news_header())
-        html.encoding = 'utf-8'
+        try:
+            html = requests.get(url, headers=self.get_news_header(), timeout=2)
+            html.encoding = 'utf-8'
+        except Exception as e:
+            log_line('访问出错')
+            print(e)
+            return 'timeout'
+
+
+
 
         response = etree.HTML(html.text)
         log('当前访问的URL', url)
@@ -157,6 +165,11 @@ class CctvSpider():
 
         for news in news_list:
             self.mgr.insert(news)
+
+        if self.retry != -1 and self.retry_flag == -1:
+            log_line('部分新闻访问出错 再次进行访问')
+            self.retry_flag = 1
+            self.run()
 
 if __name__ == '__main__':
     CctvSpider().run()

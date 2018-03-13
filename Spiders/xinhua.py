@@ -160,8 +160,13 @@ class XinHuaSpider():
         '''
         t_sleep()
 
-        html = requests.get(url, headers=self.get_news_header())
-        html.encoding = 'utf-8'
+        try:
+            html = requests.get(url, headers=self.get_news_header(), timeout=2)
+            html.encoding = 'utf-8'
+        except Exception as e:
+            log_line('访问出错')
+            print(e)
+            return 'timeout'
 
         response = etree.HTML(html.text)
         title, date, content = self.parse_item(response)

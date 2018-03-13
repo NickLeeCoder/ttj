@@ -81,9 +81,13 @@ class HeXunSpider():
         '''
         t_sleep()
 
-        header = self.get_news_header()
-        html = requests.get(url, headers=header)
-        html.encoding = 'gbk'
+        try:
+            html = requests.get(url, headers=self.get_news_header(), timeout=2)
+            html.encoding = 'gbk'
+        except Exception as e:
+            log_line('访问出错')
+            print(e)
+            return 'timeout'
 
         # log(html.text)
 
@@ -133,6 +137,11 @@ class HeXunSpider():
 
             for news in news_list:
                 self.mgr.insert(news)
+
+        if self.retry != -1 and self.retry_flag == -1:
+            log_line('部分新闻访问出错 再次进行访问')
+            self.retry_flag = 1
+            self.run()
 
 if __name__ == '__main__':
     HeXunSpider().run()

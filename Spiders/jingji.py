@@ -55,14 +55,20 @@ class JingJiSpider(object):
         '''
         for url in urls:
             t_sleep()
-
-            news = requests.get(url)
-            news.encoding = 'utf-8'
             log('当前访问的URL', url)
 
-            response = etree.HTML(news.text)
 
-            item = self.parse_item(response, news.url)
+            try:
+                html = requests.get(url, timeout=2)
+                html.encoding = 'gbk'
+            except Exception as e:
+                log_line('访问出错')
+                print(e)
+                continue
+
+            response = etree.HTML(html.text)
+
+            item = self.parse_item(response, html.url)
             MogoMgr().insert(item)
 
     def parse_news(self, html):
@@ -121,6 +127,11 @@ class JingJiSpider(object):
 
         news_list = self.get_newslist()
         self.get_newsinfo(news_list)
+
+        if self.retry != -1 and self.retry_flag == -1:
+            log_line('部分新闻访问出错 再次进行访问')
+            self.retry_flag = 1
+            self.run()
 
 
 if __name__ == '__main__':

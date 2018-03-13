@@ -102,8 +102,15 @@ class PbcSpider():
         # 利用新的cookie对提供的动态网址进行访问即是我们要达到的内容页面了
         r.cookies.update(cookies)
         # content = r.get(self.host_url + dynamicurl).content.decode('utf-8')
-        content = r.get(self.host_url + dynamicurl)
-        content.encoding = 'utf-8'
+
+
+        try:
+            content = r.get(self.host_url + dynamicurl, timeout=2)
+            content.encoding = 'utf-8'
+        except Exception as e:
+            log_line('访问出错')
+            print(e)
+            return 'timeout'
 
         return content
 
@@ -138,7 +145,11 @@ class PbcSpider():
         请求每一个新闻详情
         '''
         t_sleep()
+
         html = self.get_html(url)
+        if html == 'timeout':
+            return 'error'
+
         response = etree.HTML(html.text)
         log('当前访问的URL', url, html.status_code)
 
@@ -308,6 +319,12 @@ class PbcSpider():
         # 信贷政策
         dest_url = 'http://www.pbc.gov.cn/jinrongshichangsi/147160/147289/index.html'
         self.send(dest_url, self.parser_xindai, self.parser_common_item)
+
+
+        if self.retry != -1 and self.retry_flag == -1:
+            log_line('部分新闻访问出错 再次进行访问')
+            self.retry_flag = 1
+            self.run()
 
 
 

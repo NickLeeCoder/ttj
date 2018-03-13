@@ -75,8 +75,15 @@ class ShangHaiSpider():
         :return:
         '''
         t_sleep()
-        html = requests.get(url, headers=self.get_news_header())
-        html.encoding = 'gbk'
+        try:
+            html = requests.get(url, headers=self.get_news_header(), timeout=2)
+            html.encoding = 'gbk'
+        except Exception as e:
+            log_line('访问出错')
+            print(e)
+            return 'timeout'
+
+
 
         response = etree.HTML(html.text)
         log('当前访问的URL', url)

@@ -6,14 +6,18 @@ from Services.MogoMgr import MogoMgr
 from Tools.tool import randomUserAgent, get_today, t_sleep
 
 from Tools.log import log_line, log
-
+from base_spider import  *
 
 class ZqrbSpider():
+
 
     def __init__(self):
         self.headers = {}
         self.date = self.get_date()
         self.mgr = MogoMgr()
+        self.retry = -1
+        self.retry_flag = -1
+        self.failurls = []
 
 
     def get_date(self):
@@ -43,7 +47,7 @@ class ZqrbSpider():
         :param url:
         :return:
         '''
-        html = requests.get(url, headers=self.get_news_header())
+        html = requests.get(url, headers=self.get_news_header(), timeout=2)
         html.encoding = 'utf-8'
 
         html = etree.HTML(html.text)
@@ -76,6 +80,9 @@ class ZqrbSpider():
             if news == 'error':
                 log('访问的新闻不存在 继续访问下一个URL')
                 continue
+            if news == 'timeout':
+                log('访问的新闻超时 暂时跳过')
+                continue
 
             news_list.append(news)
         return news_list
@@ -89,15 +96,23 @@ class ZqrbSpider():
         '''
 
         t_sleep()
+        log('当前访问的URL', url)
 
         header = self.get_news_header()
-        html = requests.get(url, headers=header)
-        html.encoding = 'utf-8'
+
+        try:
+            html = requests.get(url, headers=header, timeout=2)
+            html.encoding = 'utf-8'
+        except Exception as e:
+            log_line('访问出错')
+            self.retry = 1
+            print(e)
+            return 'timeout'
 
         # log(html.text)
 
         response = etree.HTML(html.text)
-        log('当前访问的URL', url, html.status_code)
+        log('当前访问的URL结果', html.status_code)
 
         if html.status_code not in (200, 301, 302):
             log('访问的URL出错！！！', url)
@@ -149,13 +164,16 @@ class ZqrbSpider():
         log_line('ZqrbSpider 启动！！！')
 
         url = self.get_start_url()
-
-        # log(url)
         urls = self.get_html(url)
         news_list = self.send_request(urls)
-        #
+
         for news in news_list:
             self.mgr.insert(news)
+
+        if self.retry != -1 and self.retry_flag == -1:
+            log_line('部分新闻访问出错 再次进行访问')
+            self.retry_flag = 1
+            self.run()
 
 if __name__ == '__main__':
     ZqrbSpider().run()
