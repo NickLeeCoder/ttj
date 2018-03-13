@@ -80,6 +80,8 @@ class CbrcSpider(BaseSpider):
         :return:
         '''
         t_sleep()
+        log('当前访问的URL', url)
+
 
         try:
             html = requests.get(url, headers=self.get_news_header(), timeout=2)
@@ -94,7 +96,7 @@ class CbrcSpider(BaseSpider):
 
 
         response = etree.HTML(html.text)
-        log('当前访问的URL', url)
+
         return self.parse_item(response)
 
     def parse_item(self, response):

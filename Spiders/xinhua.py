@@ -161,6 +161,9 @@ class XinHuaSpider(BaseSpider):
         '''
         t_sleep()
 
+        log('当前访问的URL', url)
+
+
         try:
             html = requests.get(url, headers=self.get_news_header(), timeout=2)
             html.encoding = 'utf-8'

@@ -149,6 +149,9 @@ class PbcSpider(BaseSpider):
         '''
         t_sleep()
 
+        log('当前访问的URL', url)
+
+
         html = self.get_html(url)
         if html == 'timeout':
             return 'error'

@@ -45,6 +45,8 @@ class Circ2Spider(BaseSpider):
         '''
 
         t_sleep()
+        log('当前访问的URL', url)
+
 
 
         try:

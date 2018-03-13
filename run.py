@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
     targets = [
         # amac.AmacSpider().run,
-        # amac2.Amac2Spider().run,
+        amac2.Amac2Spider().run,
         # bjjrj.BjjrjSpider().run,
         # cbrc.CbrcSpider().run,
         # cctv.CctvSpider().run,
@@ -46,7 +46,7 @@ if __name__ == '__main__':
         # stcn.StcnSpider().run,
         # szjrj.SzJrjSpider().run,
         # xinhua.XinHuaSpider().run,
-        zqrb.ZqrbSpider().run,
+        # zqrb.ZqrbSpider().run,
     ]
 
     start = time.time()

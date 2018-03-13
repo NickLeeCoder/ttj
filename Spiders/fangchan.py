@@ -63,6 +63,8 @@ class FangChanSpider(BaseSpider):
         :return:
         '''
         t_sleep()
+        log('当前访问的URL', url)
+
 
         try:
             html = requests.get(url, headers=self.get_news_header(), timeout=2)
@@ -77,7 +79,7 @@ class FangChanSpider(BaseSpider):
 
 
         response = etree.HTML(html.text)
-        log('当前访问的URL', url)
+
 
         title, date, content = self.parse_item(response)
         news = News(title=title, date=date, content=content, url=url)
