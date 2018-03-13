@@ -43,6 +43,28 @@ class Setting(object):
     SERVER_PASSWORD = 'lwk110'
 
 
+    spiders = {
+        'amac': '',
+        'bjjrj': '',
+        'cbrc': '',
+        'cctv': '',
+        'circ': '',
+        'cnstock': '',
+        'cs': '',
+        'csrc': '',
+        'fangchan': '',
+        'gzjrj': '',
+        'hexun': '',
+        'jingji': '',
+        'mohurd': '',
+        'pbc': '',
+        'shanghai': '',
+        'stcn': '',
+        'szjrj': '',
+
+    }
+
+
 
 
 

@@ -26,19 +26,6 @@ class EmailManager(object):
     def get_content(self):
         """获取邮件模版"""
         me = u'淘淘金新闻收集 <%s>' % 'fxxclwk@163.com'
-        # print(me)
-        # news_list = [
-        #     {'title': '深交所：推进债市服务实体经济向纵深发展',
-        #      'url': 'http://bond.hexun.com/2018-01-26/192317103.html'
-        #      },
-        #     {'title': '东哥说股：三一重工均线多头，短期上涨走势已成！',
-        #      'url': 'http://stock.hexun.com/2018-01-27/192327892.html'
-        #      },
-        #     {'title': '东哥说股：三一重工均线多头，短期上涨走势已成！',
-        #      'url': 'http://stock.hexun.com/2018-01-27/192327892.html'
-        #      },
-        # ]
-
         news_list = self.mogo_mgr.get_news()
 
         # log(dir(news_list))

@@ -1,11 +1,9 @@
 
 
 import random, time
-import base64
 from datetime import datetime
 from Setting.setting import Setting
 
-cc = 0
 
 # 随机的User-Agent
 def randomUserAgent():
@@ -57,12 +55,11 @@ def has_keywords(item):
     for val in keywords:
         if val in item['content'] or val in item['title']:
             print('该新闻有敏感关键字 需要发送邮件', val, item['url'])
-            global cc
-            cc += 1
-            print('发邮件的新闻' + str(cc))
+            # global cc
+            # cc += 1
+            # print('发邮件的新闻' + str(cc))
             return True
     return False
-
 
 if __name__ == '__main__':
     y, m, d =  get_today()

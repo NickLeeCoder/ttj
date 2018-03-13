@@ -2,6 +2,13 @@
 import datetime
 
 
+logfile = '../ttj.log'
+
+def log2file(filepath, content):
+    with open(filepath, 'a') as f:
+        f.write(content)
+
+
 def get_time():
 
     time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -16,25 +23,30 @@ def log(*args):
         if isinstance(m, list):
             # 尝试打印列表明细
             for element in m:
-                print(seq_str + ' ** ' + str(element))
+                content = seq_str + ' ** ' + str(element) + '\n'
+                log2file(logfile, content)
+                # print(content)
             continue
 
         if isinstance(m, dict):
             for k, v in m.items():
-                print(seq_str + ' ** ' + str(k) + ' = ' + str(v))
+                content = seq_str + ' ** ' + str(k) + ' = ' + str(v) + '\n'
+                log2file(logfile, content)
+                # print(content)
             continue
 
-        seq_str += ' ** ' + str(m)
-    if not seq_str.endswith('] '):
-        print(seq_str)
+        logstr = seq_str + ' ** ' + str(m) + '\n'
+        # print(logstr)
+        log2file(logfile, logstr)
 
 
 def log_line(title=''):
     '''打印分割线'''
     seq_str = get_time()
     print('\n\n')
-    print(seq_str + '-' * 20 + str(title) + '-' * 25)
-
+    content = seq_str + '-' * 20 + str(title) + '-' * 25 + '\n'
+    # print(content)
+    log2file(logfile, content)
 
 if __name__ == '__main__':
     # 使用案例

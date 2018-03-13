@@ -5,6 +5,7 @@ from Setting.setting import Setting
 from pymongo.errors import DuplicateKeyError
 from Tools.singleton import singleton
 from Tools.log import log_line, log
+from Tools.tool import has_keywords
 
 
 @singleton
@@ -25,6 +26,10 @@ class MogoMgr(object):
 
     def insert(self, item):
         item = item.__dict__
+        if has_keywords(item):
+            item['show_sended'] = '1'
+            log('含有敏感关键字')
+
         log('插入数据')
         try:
             self.sheet.insert(item)
