@@ -25,12 +25,8 @@ class Circ2Spider(BaseSpider):
         ]
 
     def get_news_header(self):
-        '''
-        请求新闻列表的请求头与请求新闻详情的请求头不一样
-        :return:
-        '''
         return {
-            'Host': 'www.gov.cn',
+            # 'Host': 'www.gov.cn',
             'User-Agent': randomUserAgent(),
             'Pragma': 'no-cache',
             'Referer': 'http://www.circ.gov.cn/web/site0/tab7642/',
@@ -45,27 +41,28 @@ class Circ2Spider(BaseSpider):
         '''
 
         t_sleep()
-        log('当前访问的URL', url)
+        # log('当前访问的URL', url)
+
+        html = requests.get(url, headers=self.get_news_header(), timeout=2)
+        html.encoding = 'utf-8'
 
 
 
-        try:
-            html = requests.get(url, headers=self.get_news_header(), timeout=2)
-            html.encoding = 'utf-8'
-        except Exception as e:
-            log_line('访问出错')
-            print(e)
-            self.__class__.retry = 1
+        # try:
+        #     html = requests.get(url, headers=self.get_news_header(), timeout=2)
+        #     html.encoding = 'utf-8'
+        # except Exception as e:
+        #     log_line('访问出错')
+        #     print(e)
+        #     self.__class__.retry = 1
+        #
+        #     return 'timeout'
 
-            return 'timeout'
-
-
-
-        # log(html.text)
+        # if html.status_code != 200:
+        #     return 'error'
 
         html = etree.HTML(html.text)
         items = html.xpath('//ul[@class="list"]/li')
-
 
         # log(len(items))
 
@@ -102,11 +99,7 @@ class Circ2Spider(BaseSpider):
 
         for url in self.start_urls:
             self.get_html(url)
-        #     self.send_request(self.get_newsUrls())
-        #
-        #     # for news in self.newslist:
-        #     #     log(news.url, news.content)
-        #     #
+
             for news in self.newslist:
                 find_one = self.mgr.find_one('url', news.url)
                 if find_one is not None:

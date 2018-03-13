@@ -77,8 +77,7 @@ class StcnSpider(BaseSpider):
 
             news = self.get_newsinfo(url)
 
-            if news == 'error':
-                log('访问的新闻不存在 继续访问下一个URL')
+            if news == 'error' or 'timeout':
                 continue
 
             news_list.append(news)
@@ -106,20 +105,11 @@ class StcnSpider(BaseSpider):
 
             return 'timeout'
 
-
-
-
-
-        # log(html.text)
-
         response = etree.HTML(html.text)
 
-
-        if html.status_code not in (200, 301, 302):
+        if html.status_code != 200:
             log('访问的URL出错！！！', url)
             return 'error'
-
-        # self.parse_item(response)
 
         title, date, content = self.parse_item(response)
         news = News(title=title, date=date, content=content, url=url)

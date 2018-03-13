@@ -52,6 +52,9 @@ class FangChanSpider(BaseSpider):
                 log(url)
                 continue
             news = self.get_newsinfo(url)
+
+            if news == 'error' or 'timeout':
+                continue
             news_list.append(news)
         return news_list
 
@@ -76,10 +79,11 @@ class FangChanSpider(BaseSpider):
 
             return 'timeout'
 
-
+        if html.status_code != 200:
+            log('访问的URL出错！！！', url)
+            return 'error'
 
         response = etree.HTML(html.text)
-
 
         title, date, content = self.parse_item(response)
         news = News(title=title, date=date, content=content, url=url)

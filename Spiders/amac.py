@@ -95,6 +95,9 @@ class AmacSpider(BaseSpider):
             self.__class__.retry = 1
             return 'timeout'
 
+        if html.status_code != 200:
+            return 'error'
+
         response = etree.HTML(html.text)
         log('当前访问的URL', url)
 

@@ -66,8 +66,7 @@ class HeXunSpider(BaseSpider):
 
             news = self.get_newsinfo(url)
 
-            if news == 'error':
-                log('访问的新闻不存在 继续访问下一个URL')
+            if news == 'error' or 'timeout':
                 continue
 
             news_list.append(news)
@@ -94,14 +93,11 @@ class HeXunSpider(BaseSpider):
 
             return 'timeout'
 
-        # log(html.text)
-
-        response = etree.HTML(html.text)
-        # log('当前访问的URL', url, html.status_code)
-
-        if html.status_code not in (200, 301, 302):
+        if html.status_code != 200:
             log('访问的URL出错！！！', url)
             return 'error'
+
+        response = etree.HTML(html.text)
 
         self.parse_item(response)
 

@@ -88,6 +88,8 @@ class CircSpider(BaseSpider):
                 log(url)
                 continue
             content = self.get_content(url)
+            if content == 'timeout' or 'error':
+                continue
             self.update_content(url, content)
 
     def get_content(self, url):
@@ -110,11 +112,10 @@ class CircSpider(BaseSpider):
 
             return 'timeout'
 
-
-
+        if html.status_code != 200:
+            return 'error'
 
         response = etree.HTML(html.text)
-
 
         con_list = response.xpath('//span[@id="zoom"]/descendant-or-self::*/text()')
         return ''.join(con_list).strip().replace('\r\n', '')

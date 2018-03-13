@@ -68,6 +68,9 @@ class CbrcSpider(BaseSpider):
                 continue
 
             content = self.get_content(url)
+            if content == 'timeout' or 'error':
+                continue
+
             for news in self.newslist:
                 if news.url == url:
                     news.content = content
@@ -93,7 +96,8 @@ class CbrcSpider(BaseSpider):
 
             return 'timeout'
 
-
+        if html.status_code != 200:
+            return 'error'
 
         response = etree.HTML(html.text)
 

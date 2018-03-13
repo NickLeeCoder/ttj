@@ -82,6 +82,8 @@ class CsrcSpider(BaseSpider):
                 log(url)
                 continue
             content = self.get_content(url)
+            if content == 'error' or 'timeout':
+                continue
             self.update_content(url, content)
 
     def get_content(self, url):
@@ -103,6 +105,10 @@ class CsrcSpider(BaseSpider):
             self.__class__.retry = 1
 
             return 'timeout'
+
+        if html.status_code != 200:
+            log('访问的URL出错！！！', url)
+            return 'error'
 
         response = etree.HTML(html.text)
 

@@ -65,6 +65,8 @@ class ShangHaiSpider(BaseSpider):
                 log(url)
                 continue
             news = self.get_newsinfo(url)
+            if news == 'timeout' or 'error':
+                continue
             news_list.append(news)
         return news_list
 
@@ -89,10 +91,11 @@ class ShangHaiSpider(BaseSpider):
 
             return 'timeout'
 
-
+        if html.status_code != 200:
+            log('访问的URL出错！！！', url)
+            return 'error'
 
         response = etree.HTML(html.text)
-
 
         title, date, content = self.parse_item(response)
         news = News(title=title, date=date, content=content, url=url)

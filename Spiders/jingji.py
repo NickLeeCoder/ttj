@@ -69,6 +69,9 @@ class JingJiSpider(BaseSpider):
 
                 continue
 
+            if html.status_code != 200:
+                continue
+
             response = etree.HTML(html.text)
 
             item = self.parse_item(response, html.url)

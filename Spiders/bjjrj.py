@@ -62,6 +62,10 @@ class BjjrjSpider(BaseSpider):
                 log(url)
                 continue
             news = self.get_newsinfo(url)
+
+            if news == 'timeout'or 'error':
+                continue
+
             news_list.append(news)
         return news_list
 
@@ -85,6 +89,9 @@ class BjjrjSpider(BaseSpider):
             self.__class__.retry = 1
 
             return 'timeout'
+
+        if html.status_code != 200:
+            return 'error'
 
         response = etree.HTML(html.text)
         self.parse_item(response)

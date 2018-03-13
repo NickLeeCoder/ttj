@@ -71,6 +71,8 @@ class MoHurdSpider(BaseSpider):
                 log(url)
                 continue
             content = self.get_content(url)
+            if content == 'error' or 'timeout':
+                continue
             self.update_content(url, content)
 
     def get_content(self, url):
@@ -93,9 +95,11 @@ class MoHurdSpider(BaseSpider):
 
             return 'timeout'
 
+        if html.status_code != 200:
+            log('访问的URL出错！！！', url)
+            return 'error'
 
         response = etree.HTML(html.text)
-
 
         con_list = response.xpath('//div[@class="union"]/descendant-or-self::*/text()')
         return ''.join(con_list).strip()

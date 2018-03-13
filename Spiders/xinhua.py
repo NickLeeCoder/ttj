@@ -150,6 +150,8 @@ class XinHuaSpider(BaseSpider):
                 continue
 
             news = self.get_iteminfo(item['LinkUrl'])
+            if news == 'timeout' or 'error':
+                continue
             news_list.append(news)
         return news_list
 
@@ -171,6 +173,10 @@ class XinHuaSpider(BaseSpider):
             log_line('访问出错')
             print(e)
             return 'timeout'
+
+        if html.status_code != 200:
+            log('访问的URL出错！！！', url)
+            return 'error'
 
         response = etree.HTML(html.text)
         title, date, content = self.parse_item(response)

@@ -27,12 +27,12 @@ if __name__ == '__main__':
 
     targets = [
         # amac.AmacSpider().run,
-        amac2.Amac2Spider().run,
-        # bjjrj.BjjrjSpider().run,
+        # amac2.Amac2Spider().run,
+        bjjrj.BjjrjSpider().run,
         # cbrc.CbrcSpider().run,
         # cctv.CctvSpider().run,
         # circ.CircSpider().run,
-        # circ2.Circ2Spider().run,
+        # circ2.Circ2Spider().run,  # 未完成！！检查！！
         # cnstock.CnstockSpider().run,
         # cs.CsSpider().run,
         # csrc.CsrcSpider().run,

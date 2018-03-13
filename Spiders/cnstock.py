@@ -73,8 +73,7 @@ class CnstockSpider(BaseSpider):
 
             news = self.get_newsinfo(url)
 
-            if news == 'error':
-                log('访问的新闻不存在 继续访问下一个URL')
+            if news == 'error' or 'timeout':
                 continue
 
             news_list.append(news)
@@ -105,8 +104,7 @@ class CnstockSpider(BaseSpider):
 
         response = etree.HTML(html.text)
 
-
-        if html.status_code not in (200, 301, 302):
+        if html.status_code != 200:
             log('访问的URL出错！！！', url)
             return 'error'
 

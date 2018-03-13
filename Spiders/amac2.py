@@ -72,6 +72,9 @@ class Amac2Spider(BaseSpider):
                 log(url)
                 continue
             content = self.parser_data(url)
+
+            if content == 'error' or 'timeout':
+                continue
             self.update_news(url, content)
 
     def parser_data(self, url):
@@ -93,6 +96,9 @@ class Amac2Spider(BaseSpider):
             print(e)
             self.__class__.retry = 1
             return 'timeout'
+
+        if html.status_code != 200:
+            return 'error'
 
         response = etree.HTML(html.text)
 

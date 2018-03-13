@@ -87,6 +87,9 @@ class SzJrjSpider(BaseSpider):
                 continue
 
             news = self.get_newsinfo(url, headers)
+
+            if news == 'timeout' or 'error':
+                continue
             news_list.append(news)
         return news_list
 
@@ -110,9 +113,11 @@ class SzJrjSpider(BaseSpider):
             self.__class__.retry = 1
             return 'timeout'
 
+        if html.status_code != 200:
+            log('访问的URL出错！！！', url)
+            return 'error'
 
         response = etree.HTML(html.text)
-
 
         title, date, content = self.parse_item(response)
         news = News(title=title, date=date, content=content, url=url)

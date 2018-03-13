@@ -105,7 +105,7 @@ class CsSpider(BaseSpider):
         response = etree.HTML(html.text)
 
 
-        if html.status_code not in (200, 301, 302):
+        if html.status_code != 200:
             log('访问的URL出错！！！', url)
             return 'error'
 
